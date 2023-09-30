@@ -23,6 +23,7 @@ class MyClient(discord.Client):
 
     async def on_ready(self):
         print(f'Logged on as {self.user}!')
+        print(system['content'])
 
         self.history = dict()
 
@@ -89,16 +90,19 @@ class MyClient(discord.Client):
         channel_messages = []
 
         async for history_message in channel.history(limit=MAX_MESSAGE_HISTORY):
-            channel_messages.insert(0, {'role':'user', "content": history_message.content})
+            if not history_message.author.bot:
+                channel_messages.insert(0, {'role':'user', "content": history_message.content})
 
         image_prompt = self.generate_chat_gpt_response(channel_messages)
 
         if image_prompt is not None:
-            image_url = self.generate_dalle_output(image_prompt)
+            async with message.channel.typing(): 
+                image_url = self.generate_dalle_output(image_prompt)
 
-            if image_prompt is not None:
-                await message.channel.send(image_prompt)
-                await message.channel.send(image_url)
+                if image_prompt is not None:
+                    await message.channel.send(image_prompt)
+                    await message.reply(image_url)
+                    # await message.channel.send(image_url)
 
 
 if __name__ == "__main__":
