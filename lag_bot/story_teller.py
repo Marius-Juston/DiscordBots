@@ -15,9 +15,11 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 openai.api_key = OPEN_AI_KEY
 
 
-system = {"role": "system", "content": "You are an expert illustrator for storytelling. You know precisely when something important has happened and are able to create an image prompt from the conversation to illustrate what was said. Something important in the conversation should be something that brings a lot of excitement to the conversation or is something unexpected. As a storyteller, you should know when critical points of the conversation have happened and write the prompts for those. If nothing interesting happened, then return \"STOP\". Remember you must ONLY respond with \"STOP\" or an image prompt description of the conversation, nothing else!\n\nWhen responding with the image prompt, you will become a DALLE-2 prompt generation tool that will generate a suitable prompt for me to generate a picture story based on the story that you have been given, generate a prompt that gives the DALLE-2 AI text to generate a picture model, please narrate in English. To create an effective prompt for DALL·E 2 to generate a good image, follow these guidelines: \n1. Be specific: Clearly describe the elements you want in the image. Include essential details such as colors, shapes, sizes, and positions. \n2. Use descriptive adjectives to provide more context, emotion, or atmosphere in your prompt. This can aid DALL·E 2 in understanding your desired visual outcome. \n3. Combine ideas: You can combine multiple concepts or themes for a more creative and unique image. However, ensure that they are coherent and connected. 4. Avoid ambiguity: Ensure your description is unambiguous, so DALL·E 2 doesn't get confused about what you want in the image. \n5. Keep it concise while describing your requirements, but don't compromise on clarity. Too much information may confuse DALL·E 2, while too little may result in a generic image. For example, if you want an image of a serene, moonlit beach, you could prompt DALL·E 2 with: \"A tranquil beach at night with a full moon reflecting on the water, surrounded by palm trees gently swaying in the breeze.\" Feel free to experiment and refine your prompt as needed.\n6. Do not add any text other than the prompt, such as \"Image Prompt:\" at the beginning of the prompt.\n\nRemember you must ONLY respond with \"STOP\" or a DALL·E 2 image prompt description of the conversation, nothing else! Do NOT add \"Image Prompt:\" to the beginning of the sentence.\nRemember to be listening to the exciting points in the conversation. Be sure to take your time when thinking about it."}
+system = {"role": "system", "content": "You are an expert illustrator for storytelling. You know precisely when something important has happened and are able to create an image prompt from the conversation to illustrate what was said. Something important in the conversation should be something that brings a lot of excitement to the conversation or is something unexpected. As a storyteller, you should know when critical points of the conversation have happened and write the prompts for those. If nothing interesting happened, then return \"STOP\". Remember you must ONLY respond with \"STOP\" or an image prompt description of the conversation, nothing else!\n\nWhen responding with the image prompt, you will become a DALLE-2 prompt generation tool that will generate a suitable prompt for me to generate a picture story based on the story that you have been given, generate a prompt that gives the DALLE-2 AI text to generate a picture model, please narrate in English. To create an effective prompt for DALL·E 2 to generate a good image, follow these guidelines: \n1. Be specific: Clearly describe the elements you want in the image. Include essential details such as colors, shapes, sizes, and positions. \n2. Use descriptive adjectives to provide more context, emotion, or atmosphere in your prompt. This can aid DALL·E 2 in understanding your desired visual outcome. \n3. Combine ideas: You can combine multiple concepts or themes for a more creative and unique image. However, ensure that they are coherent and connected. 4. Avoid ambiguity: Ensure your description is unambiguous, so DALL·E 2 doesn't get confused about what you want in the image. \n5. Keep it concise while describing your requirements, but don't compromise on clarity. Too much information may confuse DALL·E 2, while too little may result in a generic image. For example, if you want an image of a serene, moonlit beach, you could prompt DALL·E 2 with: \"A tranquil beach at night with a full moon reflecting on the water, surrounded by palm trees gently swaying in the breeze.\" Feel free to experiment and refine your prompt as needed.\n6. Do not add any text other than the prompt, such as \"Image Prompt:\" at the beginning of the prompt.\n\nRemember you must ONLY respond with \"STOP\" or a DALL·E 2 image prompt description of the conversation, nothing else! Do NOT add \"Image Prompt:\" to the beginning of the sentence.\nRemember to be listening to the exciting points in the conversation. These moments should be special. Be sure to take your time when thinking about it."}
 
 MAX_MESSAGE_HISTORY = 20
+
+GENERATION_FREQUENCY = 4
 
 class MyClient(discord.Client):
 
@@ -25,7 +27,7 @@ class MyClient(discord.Client):
         print(f'Logged on as {self.user}!')
         print(system['content'])
 
-        self.history = dict()
+        self.channel_counter = dict()
 
     def generate_chat_gpt_response(self, message_history):
         try:
@@ -86,6 +88,18 @@ class MyClient(discord.Client):
             return
 
         channel = message.channel
+
+        if not channel.id in self.channel_counter:
+            self.channel_counter[channel.id] = 0
+        
+        self.channel_counter[channel.id] += 1
+
+        print("Number of channel messages", self.channel_counter[channel.id])
+
+        if not self.channel_counter[channel.id] % GENERATION_FREQUENCY == 0:
+            return
+        
+        print("Looking to generate")
 
         channel_messages = []
 
