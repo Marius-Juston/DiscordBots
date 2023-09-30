@@ -4,6 +4,8 @@ import openai
 import openai.error
 from dotenv import load_dotenv
 
+# https://stackoverflow.com/questions/55462226/how-can-i-keep-a-python-script-on-a-remote-server-running-after-closing-out-of-s
+
 load_dotenv('.env_story_teller')
 
 
@@ -13,9 +15,7 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 openai.api_key = OPEN_AI_KEY
 
 
-system = {"role": "system", "content": """You are an expert illustrator for storytelling. You know precisely when something important has happened and are able to create an image prompt from the conversation to illustrate what was said. If nothing interesting happened, then return "STOP". Remember you must ONLY respond with "STOP" or an image prompt description of the conversation, nothing else!
-
-When responding with the image prompt, do not have any extra text other than the image description itself. The image description must be very detailed."""}
+system = {"role": "system", "content": "You are an expert illustrator for storytelling. You know precisely when something important has happened and are able to create an image prompt from the conversation to illustrate what was said. If nothing interesting happened, then return \"STOP\". Remember you must ONLY respond with \"STOP\" or an image prompt description of the conversation, nothing else!\n\nWhen responding with the image prompt, do not have any extra text other than the image description itself. The image description must be very detailed."}
 
 MAX_MESSAGE_HISTORY = 20
 
