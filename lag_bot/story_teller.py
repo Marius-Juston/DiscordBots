@@ -19,7 +19,7 @@ system = {"role": "system", "content": "You are an expert illustrator for storyt
 
 MAX_MESSAGE_HISTORY = 20
 
-GENERATION_FREQUENCY = 4
+GENERATION_FREQUENCY = 10
 
 class MyClient(discord.Client):
 
