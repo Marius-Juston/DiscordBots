@@ -1,0 +1,2175 @@
+{
+  "\ud83d\ude1a": {
+    "HP": 6,
+    "attacks": [
+      {
+        "type": "H",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "F",
+        "text": "Blows a healing kiss!"
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 1,
+        "mode": "A",
+        "text": "Blows love kisses everywhere!"
+      },
+      {
+        "type": "M",
+        "p": 0.2,
+        "amount": 1,
+        "text": "Gives ticklish kiss attacks!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude06": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Laughs so hard everyone gets awkward!"
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 3,
+        "mode": "F",
+        "text": "Punchline hits the first one hard!"
+      },
+      {
+        "type": "H",
+        "p": 0.7,
+        "amount": 3,
+        "mode": "N",
+        "text": "Laughter is the best medicine, heals neighbours."
+      },
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 2,
+        "text": "Slaps knee, hits the one ahead."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude09": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Shoots a wink, too charming to resist!"
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 1,
+        "mode": "F",
+        "text": "A rogue wink that disorients the first opponent"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Killing them with kindness!"
+      }
+    ]
+  },
+  "\ud83d\ude28": {
+    "HP": 6,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.7,
+        "amount": 2,
+        "text": "Attacks with a panic swipe!"
+      },
+      {
+        "type": "R",
+        "p": 0.3,
+        "amount": 3,
+        "mode": "A",
+        "text": "Launches a wave of fear affecting everyone!"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Shields self with spontaneous panic!"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 2,
+        "text": "The fear intensifies!"
+      }
+    ]
+  },
+  "\ud83d\ude04": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Infectious laughter hurts everyone!"
+      },
+      {
+        "type": "H",
+        "p": 0.4,
+        "amount": 2,
+        "mode": "N",
+        "text": "Healing joy spreads to neighbours."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude2c": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.7,
+        "amount": 2,
+        "text": "Bites opponent viciously!"
+      },
+      {
+        "type": "B",
+        "p": 0.3,
+        "amount": 3,
+        "text": "Clenches teeth to resist damage."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude2b": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Unleashes a wave of despair onto everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Tires you out with incessant complaining."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude37": {
+    "HP": 5,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.8,
+        "amount": 2,
+        "mode": "A",
+        "text": "Coughs, spreading germs to everyone!"
+      },
+      {
+        "type": "R",
+        "p": 0.2,
+        "amount": 3,
+        "mode": "F",
+        "text": "Throws a medicine bottle at the first person!"
+      },
+      {
+        "type": "M",
+        "p": 0.5,
+        "amount": 1,
+        "text": "Slaps with a thermometer."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Mask provides some protection."
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 3,
+        "mode": "N",
+        "text": "Shares health masks with the neighbour."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude21": {
+    "HP": 6,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.6,
+        "amount": 3,
+        "text": "Unleashes a damaging burst of anger at the person ahead."
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 2,
+        "mode": "F",
+        "text": "Launches a heated argument, damaging the first person on its path."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude32": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "Shocked expression scares everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 3,
+        "text": "Shakes head and hits the opponent"
+      },
+      {
+        "type": "H",
+        "p": 1.0,
+        "amount": 5,
+        "mode": "F",
+        "text": "Calms down and restores health"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude0c": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "H",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "F",
+        "text": "A calming presence heals the first person."
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 1,
+        "mode": "A",
+        "text": "Peacefulness brings slight damage to all"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Achieves zen to defend attacks."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude39": {
+    "HP": 3,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Laughs so hard it makes everyone cry!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 1,
+        "text": "Slaps opponent with a tail!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude03": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.6,
+        "amount": 2,
+        "text": "Cheery punch!"
+      },
+      {
+        "type": "H",
+        "p": 0.4,
+        "amount": 2,
+        "mode": "F",
+        "text": "A contagious smile heals!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude29": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "Sends negativity vibes to everyone!"
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 3,
+        "mode": "F",
+        "text": "Sighs and feels relief."
+      },
+      {
+        "type": "M",
+        "p": 1.0,
+        "amount": 1,
+        "text": "Lashes out in frustration."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude30": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Sweats nervously which annoys everyone!"
+      },
+      {
+        "type": "B",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Shakes fearfully, possibly blocking incoming attacks."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude3a": {
+    "HP": 5,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "The kitty purrs, distracting everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Scratches with its little paws."
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 2,
+        "mode": "N",
+        "text": "Kitty cuddles rejuvenate nearby emojis."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Uses its charm to avoid attacks."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude01": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 1,
+        "mode": "A",
+        "text": "Infectious smile spreads happiness hurting all!"
+      },
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 2,
+        "text": "Happy slap attack!"
+      },
+      {
+        "type": "H",
+        "p": 0.4,
+        "amount": 2,
+        "mode": "F",
+        "text": "Positivity heals the first person!"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Blocks some attacks with cheerful spirit!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude07": {
+    "HP": 8,
+    "attacks": [
+      {
+        "type": "H",
+        "p": 1.0,
+        "amount": 5,
+        "mode": "N",
+        "text": "The angel heals its adjacent allies with divine light."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Uses divine protection to resist damage."
+      },
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 4,
+        "mode": "F",
+        "text": "Sends a beam of holy light to the first enemy."
+      },
+      {
+        "type": "R",
+        "p": 0.3,
+        "amount": 2,
+        "mode": "A",
+        "text": "Sends out a flurry of divine feathers that lightly damages all enemies."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SS",
+        "p": 1.0,
+        "summon": "\ud83d\udd4a\ufe0f",
+        "text": "Summons a peace dove upon death."
+      },
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Gains vitality and increases their healing potential when defeating an enemy through forgiving their sins."
+      }
+    ]
+  },
+  "\ud83d\ude00": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Spreads infectious laughter causing slight discomfort!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Unexpected headbutt due to sheer happiness!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude08": {
+    "HP": 7,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Uses dark magic on everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Strikes with evil force."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Merges with the shadows to block incoming attacks."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Growing stronger from the fallen enemies."
+      }
+    ]
+  },
+  "\ud83d\ude36": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "F",
+        "text": "Emits a silent, piercing stare that focuses on a single enemy."
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 1,
+        "text": "Silently sneaks and punches the enemy ahead."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "So silent that often goes unnoticed, evading some attacks."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude22": {
+    "HP": 2,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 3,
+        "text": "Sobs loudly shaking the ground."
+      },
+      {
+        "type": "H",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "N",
+        "text": "Tears of empathy heal people nearby."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 2,
+        "text": "The relief after crying out loud!"
+      }
+    ]
+  },
+  "\ud83d\ude0b": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 1,
+        "mode": "A",
+        "text": "Eats snacks that explode involving everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Bites with strong teeth!"
+      },
+      {
+        "type": "H",
+        "p": 0.5,
+        "amount": 2,
+        "mode": "N",
+        "text": "Shares food with its neighbors, making them heal!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude1e": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.6,
+        "amount": 2,
+        "text": "A wave of despair hits the opponent."
+      },
+      {
+        "type": "H",
+        "p": 0.4,
+        "amount": 2,
+        "mode": "N",
+        "text": "A soothing aura helps nearby allies recover."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude3b": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 1,
+        "mode": "A",
+        "text": "Purr-fect charm! Everyone falls in love!"
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 2,
+        "mode": "N",
+        "text": "Healing lick to the one next to it."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 2,
+        "text": "The kitty grows stronger from the love it was given!"
+      }
+    ]
+  },
+  "\ud83d\ude10": {
+    "HP": 7,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 1,
+        "mode": "A",
+        "text": "Releases a wave of apathy, causing minor damage to all."
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Uses a stiff punch."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 4,
+        "text": "Turtling up, barely reacting to the assault."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude18": {
+    "HP": 6,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.8,
+        "amount": 2,
+        "mode": "A",
+        "text": "Blows a love-filled kiss for everyone!"
+      },
+      {
+        "type": "H",
+        "p": 0.2,
+        "amount": 1,
+        "mode": "N",
+        "text": "Spreads love and heals everyone near them."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude1c": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Winks and distracts everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Slaps you with its never-ending tongue!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude33": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Stares awkwardly causing discomfort."
+      },
+      {
+        "type": "B",
+        "p": 0.4,
+        "amount": 2,
+        "text": "Dodges away from confrontation bashfully."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude11": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.6,
+        "amount": 2,
+        "text": "Annoyingly taps you."
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 1,
+        "mode": "F",
+        "text": "Casts an aura of boredom!"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Never looks surprised, difficult to measure impact!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude26": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Yells in surprise, startling everyone!"
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 4,
+        "mode": "F",
+        "text": "A sudden loud scream directed at the first person."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Blocks by flinching away."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude2e": {
+    "HP": 3,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "Shockingly screams out loud!"
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 2,
+        "mode": "N",
+        "text": "Heals by sending calming vibes to neighbors."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude40": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.8,
+        "amount": 2,
+        "mode": "A",
+        "text": "The terrified \ud83d\ude31 emoji screams in fear, hitting everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.2,
+        "amount": 4,
+        "text": "Scratches opponent out of panic!"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Gets scared and runs away, blocking attacks."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SS",
+        "p": 1.0,
+        "summon": "\ud83d\ude3a",
+        "text": "Terrified \ud83d\ude31 emoji becomes more calm, summon its calm kitten form once slain."
+      }
+    ]
+  },
+  "\ud83d\ude19": {
+    "HP": 3,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Blows kisses to everyone, causing damage out of infatuation!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 1,
+        "text": "Uses cute charm on the person ahead, causing minor damage."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude0a": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "H",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "F",
+        "text": "Spreads positivity to rejuvenate the weakest"
+      },
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 1,
+        "text": "Throws a polite punch"
+      },
+      {
+        "type": "R",
+        "p": 0.1,
+        "amount": 1,
+        "mode": "A",
+        "text": "Gives a charming smile that distracts everyone"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "The power of positivity blocks some attacks."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude0f": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Smirks so suavely, it damages everyone's pride."
+      },
+      {
+        "type": "B",
+        "p": 0.4,
+        "amount": 3,
+        "text": "His ever-present nonchalance effortlessly blocks attacks."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Grows stronger with every opponent defeated, just as expected."
+      }
+    ]
+  },
+  "\ud83d\ude0e": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "His cool aura gives everyone damage!"
+      },
+      {
+        "type": "R",
+        "p": 0.3,
+        "amount": 3,
+        "mode": "F",
+        "text": "Throws his sunglasses at the opponent!"
+      },
+      {
+        "type": "M",
+        "p": 0.6,
+        "amount": 4,
+        "text": "Drops a punch line."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "A charming smirk as he avoids danger."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude34": {
+    "HP": 6,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "Snores so loud, everyone's ears bleed!"
+      },
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 1,
+        "text": "Sleepwalks and hits a random enemy."
+      },
+      {
+        "type": "H",
+        "p": 0.5,
+        "amount": 3,
+        "mode": "N",
+        "text": "Dreams of healing. Nearby allies recover some health."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Uses a pillow to block attacks."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude35": {
+    "HP": 6,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "F",
+        "text": "This Emoji can stun the first person by its mere presence!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "A clumsy fall attack."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SS",
+        "p": 1.0,
+        "summon": "\ud83d\udc7b",
+        "text": "Transforms into a ghost after death!"
+      }
+    ]
+  },
+  "\ud83d\ude43": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Tosses negative energy to everyone."
+      },
+      {
+        "type": "H",
+        "p": 0.4,
+        "amount": 3,
+        "mode": "N",
+        "text": "Heals nearby emojis with positive vibes."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude14": {
+    "HP": 3,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 1,
+        "mode": "A",
+        "text": "Everyone feels your sadness!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 2,
+        "text": "Hits them with a sorrow punch."
+      },
+      {
+        "type": "H",
+        "p": 0.8,
+        "amount": 3,
+        "mode": "F",
+        "text": "Heals own sadness first."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude1d": {
+    "HP": 3,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Tongue slaps all opponents!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Lick attack!"
+      },
+      {
+        "type": "H",
+        "p": 0.2,
+        "amount": 1,
+        "mode": "N",
+        "text": "Infectious laughter heals!"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 1,
+        "text": "The goofball gets stronger after each victory!"
+      }
+    ]
+  },
+  "\ud83d\ude42": {
+    "HP": 2,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.2,
+        "amount": 1,
+        "mode": "A",
+        "text": "Spreading vibes of kindness!"
+      },
+      {
+        "type": "M",
+        "p": 0.5,
+        "amount": 1,
+        "text": "Dusting off negativity"
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 2,
+        "mode": "F",
+        "text": "Healing with positive energy."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude15": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Projects confusion, affecting everyone!"
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 5,
+        "mode": "F",
+        "text": "Channels doubt towards the nearest opponent!"
+      },
+      {
+        "type": "M",
+        "p": 0.5,
+        "amount": 3,
+        "text": "Tumbles and accidentally bumps into enemies."
+      },
+      {
+        "type": "B",
+        "p": 0.3,
+        "amount": 4,
+        "text": "Defends themselves out of uncertainty."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude13": {
+    "HP": 6,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 1,
+        "mode": "A",
+        "text": "Sweats profusely, causing slippery floors!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 2,
+        "text": "Slips into opponents causing them to stumble"
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 3,
+        "mode": "N",
+        "text": "A comforting pat on the back that also restores health"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Tries desperately to dodge incoming attacks"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Feels revitalized after a hard-won victory"
+      }
+    ]
+  },
+  "\ud83d\ude23": {
+    "HP": 2,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.7,
+        "amount": 3,
+        "text": "Stressed out, lashing out at anyone in reach!"
+      },
+      {
+        "type": "H",
+        "p": 0.2,
+        "amount": 2,
+        "mode": "N",
+        "text": "Provides comfort to those nearby in shared misery."
+      },
+      {
+        "type": "B",
+        "p": 0.1,
+        "amount": 3,
+        "text": "His high resistance to stress can occasionally serve to block attacks."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Grows in strength from overcoming anxieties."
+      }
+    ]
+  },
+  "\ud83d\ude17": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.8,
+        "amount": 2,
+        "mode": "A",
+        "text": "Blows kisses that confuse the enemy."
+      },
+      {
+        "type": "R",
+        "p": 0.2,
+        "amount": 4,
+        "mode": "F",
+        "text": "A surprising smack straight ahead."
+      },
+      {
+        "type": "H",
+        "p": 0.5,
+        "amount": 1,
+        "mode": "N",
+        "text": "Calming whistles heal the nearby emoji."
+      },
+      {
+        "type": "M",
+        "p": 0.5,
+        "amount": 2,
+        "text": "A strong punch from an unexpected contender!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude20": {
+    "HP": 6,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.7,
+        "amount": 5,
+        "text": "Fist of rage hits hard!"
+      },
+      {
+        "type": "R",
+        "p": 0.3,
+        "amount": 3,
+        "mode": "L",
+        "text": "Throws a tantrum and last person gets the worst of it!"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "When angry, can resist a good amount of damage."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 2,
+        "text": "When it defeats someone, its anger fuels its strength!"
+      }
+    ]
+  },
+  "\ud83d\ude3e": {
+    "HP": 5,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Hisses, spreading fear!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 4,
+        "text": "Scratches with its sharp claws."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude2a": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Snores so loud, everyone hears!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 1,
+        "text": "Turns and kicks in his sleep."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Sleep means he's not noticing some attacks."
+      },
+      {
+        "type": "H",
+        "p": 1.0,
+        "amount": 2,
+        "mode": "F",
+        "text": "Rests well and wakes up refreshed."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude02": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 1,
+        "mode": "A",
+        "text": "Laughter is contagious, everyone gets tickled!"
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 2,
+        "mode": "F",
+        "text": "Singles one out to laugh at their funny face!"
+      },
+      {
+        "type": "H",
+        "p": 1.0,
+        "amount": 2,
+        "mode": "N",
+        "text": "Spreads happiness, healing those surrounding it."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude3c": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "The cat glares at everyone, instilling fear!"
+      },
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 3,
+        "text": "Cat scratches the enemy with its claws!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude0d": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "Everyone falls in love!"
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 3,
+        "mode": "N",
+        "text": "Heals with the power of love!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude38": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "The cat purrs, generating warmth that everyone can feel."
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Scratches with sharp claws."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 1,
+        "text": "The kitty licks its paws, healing after a victory!"
+      }
+    ]
+  },
+  "\ud83d\ude24": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Steam from nostrils hits everyone."
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Rampage upset attack!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude3d": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.6,
+        "amount": 3,
+        "text": "Scratches with tiny claws."
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 1,
+        "mode": "F",
+        "text": "This kitten spits a hairball!"
+      },
+      {
+        "type": "H",
+        "p": 0.2,
+        "amount": 2,
+        "mode": "N",
+        "text": "Cuddles and heals nearby emojis."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Account of nine lives."
+      }
+    ]
+  },
+  "\ud83d\ude1b": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Sticks out tongue and blows a raspberry!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Bumps into others while running around goofily."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude12": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "F",
+        "text": "Rolls eyes so hard, generates a strong wind!"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 4,
+        "text": "Blocks the attack with a cold shoulder."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Increased damage when you're too annoying!"
+      }
+    ]
+  },
+  "\ud83d\ude05": {
+    "HP": 5,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.5,
+        "amount": 2,
+        "mode": "F",
+        "text": "Breaks into a nervous sweat, hitting the first person!"
+      },
+      {
+        "type": "H",
+        "p": 0.5,
+        "amount": 3,
+        "mode": "N",
+        "text": "Comforts allies, healing them."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Dodges awkward situations!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude2f": {
+    "HP": 3,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 1,
+        "mode": "A",
+        "text": "Spreads shock and astonishment to everyone!"
+      },
+      {
+        "type": "R",
+        "p": 0.3,
+        "amount": 4,
+        "mode": "F",
+        "text": "Sends a concentrated gasp of horror to one!"
+      },
+      {
+        "type": "H",
+        "p": 0.5,
+        "amount": 2,
+        "mode": "N",
+        "text": "Release of tension helps heal nearby emojis."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude27": {
+    "HP": 3,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Surprises everyone by releasing a shockwave of pure dread!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 1,
+        "text": "Lashes out with an anxious swipe."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude2d": {
+    "HP": 2,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 1,
+        "mode": "A",
+        "text": "The flood of tears hits everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 3,
+        "text": "Breaks down and hits them"
+      },
+      {
+        "type": "H",
+        "p": 1.0,
+        "amount": 4,
+        "mode": "F",
+        "text": "Heals themselves through catharsis."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude3f": {
+    "HP": 3,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "Weeps and everyone gets affected!"
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 1,
+        "mode": "F",
+        "text": "Takes a catnap to regain health!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude1f": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.8,
+        "amount": 1,
+        "mode": "A",
+        "text": "Spreads insecurities to everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.2,
+        "amount": 2,
+        "text": "Shivers and somehow lands a hit"
+      },
+      {
+        "type": "H",
+        "p": 1.0,
+        "amount": 6,
+        "mode": "F",
+        "text": "Comforting themselves restores a lot of health"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Covers ears in fear!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude25": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Emoji overflows with tears, soaking everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Rushes forward, dealing a blow with tear-soaked hands."
+      },
+      {
+        "type": "H",
+        "p": 1.0,
+        "amount": 2,
+        "mode": "F",
+        "text": "Cries so much it makes you want to comfort and heal them."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude41": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 1,
+        "mode": "A",
+        "text": "Sighs deeply and brings everyone down a peg."
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 2,
+        "text": "Pushes another emoji away with a sad shove."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\ude16": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 2,
+        "text": "The intense headache hits foes as well."
+      },
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 1,
+        "mode": "A",
+        "text": "Unleashes a wave of despair that overwhelms everyone."
+      },
+      {
+        "type": "H",
+        "p": 0.5,
+        "amount": 3,
+        "mode": "N",
+        "text": "A sympathetic pat heals neighbors."
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 2,
+        "text": "The distress is a strong shield against attacks."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 2,
+        "text": "The pain grows worse with every opponent defeated."
+      }
+    ]
+  },
+  "\ud83d\ude31": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "Screams that scare everyone!"
+      },
+      {
+        "type": "R",
+        "p": 0.3,
+        "amount": 5,
+        "mode": "F",
+        "text": "Direct screams that cause terror!"
+      },
+      {
+        "type": "M",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Shocking contact!"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Shivers in fear, unintentionally dodging attacks."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\udd4a\ufe0f": {
+    "HP": 2,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 3,
+        "mode": "A",
+        "text": "Spreads peace, everyone calms down!"
+      },
+      {
+        "type": "R",
+        "p": 0.3,
+        "amount": 7,
+        "mode": "L",
+        "text": "Sneakily pecks the last person!"
+      },
+      {
+        "type": "H",
+        "p": 1.0,
+        "amount": 5,
+        "mode": "N",
+        "text": "Heals neighbour with peaceful cooing"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Flies away from danger"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SS",
+        "p": 1.0,
+        "summon": "\ud83d\udc23",
+        "text": "The cycle of life continues!"
+      }
+    ]
+  },
+  "\ud83d\udc7b": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Spooky haunting scares everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 3,
+        "text": "Ghostly touch causes shivers"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SS",
+        "p": 1.0,
+        "summon": "\u2620\ufe0f",
+        "text": "Once defeated, rises as a specter!"
+      },
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Feeds on fear to grow stronger!"
+      }
+    ]
+  },
+  "\ud83c\udf43": {
+    "HP": 2,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 3,
+        "mode": "A",
+        "text": "A gust of wind blows the leaf onto everyone!"
+      },
+      {
+        "type": "H",
+        "p": 0.4,
+        "amount": 2,
+        "mode": "N",
+        "text": "The leaf heals the emojis next to it through its calming presence."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\udc3e": {
+    "HP": 3,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 5,
+        "mode": "F",
+        "text": "A projectile furball attack!"
+      },
+      {
+        "type": "M",
+        "p": 0.6,
+        "amount": 2,
+        "text": "Swift and clingy scratches."
+      }
+    ],
+    "specials": []
+  },
+  "\ud83d\udc23": {
+    "HP": 1,
+    "attacks": [
+      {
+        "type": "M",
+        "p": 0.7,
+        "amount": 2,
+        "text": "Pecks with its tiny beak!"
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 2,
+        "mode": "N",
+        "text": "Nestlings chirp in unison to calm the team!"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SH",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Being fed well, the baby bird grows stronger."
+      }
+    ]
+  },
+  "\u2620\ufe0f": {
+    "HP": 7,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.8,
+        "amount": 3,
+        "mode": "A",
+        "text": "Soul-stealing gaze descends!"
+      },
+      {
+        "type": "M",
+        "p": 0.2,
+        "amount": 5,
+        "text": "Fierce bone-rattling attack!"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Blocks attack with the aid of the underworld!"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Feeds off the vanquished soul!"
+      }
+    ]
+  },
+  "\ud83e\udd10": {
+    "HP": 8,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "His silence makes the room awkward!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 4,
+        "text": "He suddenly releases a deafening scream!"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Sometimes, not speaking is the best shield!"
+      }
+    ],
+    "specials": []
+  },
+  "\ud83e\udd11": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.7,
+        "amount": 2,
+        "mode": "A",
+        "text": "Throws bags of money, everyone gets hit!"
+      },
+      {
+        "type": "M",
+        "p": 0.2,
+        "amount": 2,
+        "text": "Smacks with a big coin"
+      },
+      {
+        "type": "B",
+        "p": 0.1,
+        "amount": 3,
+        "text": "Hides behind a wall of money"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SS",
+        "p": 1.0,
+        "summon": "\ud83d\udcb0",
+        "text": "When defeated, turns into a bag of money!"
+      }
+    ]
+  },
+  "\ud83d\udc80": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Sends a chilling curse to everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 5,
+        "text": "Fights using ominous dark power."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SS",
+        "p": 1.0,
+        "summon": "\ud83d\udc7b",
+        "text": "When killed, it becomes a ghost!"
+      }
+    ]
+  },
+  "\ud83e\udd75": {
+    "HP": 6,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 2,
+        "mode": "A",
+        "text": "Heat wave rolls out across everyone!"
+      },
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 7,
+        "mode": "F",
+        "text": "Focussed barrel of heat on single target!"
+      },
+      {
+        "type": "H",
+        "p": 0.2,
+        "amount": 2,
+        "mode": "F",
+        "text": "First aid cooling gel reduces heat!"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Overheats enemies easily for bonus heat!"
+      }
+    ]
+  },
+  "\ud83e\udd76": {
+    "HP": 4,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 2,
+        "mode": "A",
+        "text": "Spreads chilly vibes to everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.4,
+        "amount": 1,
+        "text": "Lands an icy touch"
+      },
+      {
+        "type": "B",
+        "p": 1.0,
+        "amount": 3,
+        "text": "Solid as an iceberg, withstands an attack"
+      }
+    ],
+    "specials": [
+      {
+        "type": "SS",
+        "p": 1.0,
+        "summon": "\u2603\ufe0f",
+        "text": "Becomes a frosty snowman upon death!"
+      }
+    ]
+  },
+  "\ud83d\udcb0": {
+    "HP": 7,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.2,
+        "amount": 1,
+        "mode": "A",
+        "text": "Flashes bling and blinds everyone!"
+      },
+      {
+        "type": "R",
+        "p": 0.4,
+        "amount": 10,
+        "mode": "F",
+        "text": "Gold coin attack!"
+      },
+      {
+        "type": "M",
+        "p": 0.1,
+        "amount": 3,
+        "text": "Swings silk money bag!"
+      },
+      {
+        "type": "B",
+        "p": 0.3,
+        "amount": 6,
+        "text": "Money is power shielding."
+      }
+    ],
+    "specials": [
+      {
+        "type": "SM",
+        "p": 1.0,
+        "amount": 2,
+        "text": "Money talks! Punishes enemies with more coin attacks!"
+      }
+    ]
+  },
+  "\u2603\ufe0f": {
+    "HP": 5,
+    "attacks": [
+      {
+        "type": "R",
+        "p": 0.6,
+        "amount": 7,
+        "mode": "A",
+        "text": "Throws a frosty snowball, chilling everyone!"
+      },
+      {
+        "type": "M",
+        "p": 0.3,
+        "amount": 2,
+        "text": "Rolls up and crushes them under his weight."
+      },
+      {
+        "type": "B",
+        "p": 0.1,
+        "amount": 3,
+        "text": "Hides himself in snow to block the attacks."
+      },
+      {
+        "type": "H",
+        "p": 0.3,
+        "amount": 4,
+        "mode": "F",
+        "text": "Heals up by gathering fresh snow around."
+      }
+    ],
+    "specials": []
+  }
+}
