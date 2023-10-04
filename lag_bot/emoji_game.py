@@ -142,9 +142,30 @@ def generate_emojis():
             character_data = json.load(f)
 
         for c in character_data['characters']:
-            emojis.remove(c)
+            if c in emojis:
+                emojis.remove(c)
 
         chatpgpt_history = character_data['history']
+
+    if os.path.exists(FORMATTED_LOAD_FILE):
+        with open(FORMATTED_LOAD_FILE, 'r') as f:
+            character_data_formatted = json.load(f)
+
+        for c, v in character_data_formatted.items():
+            print(c)
+            for a in v['attacks']:
+                if a is None:
+                    continue
+
+                q = a['type']
+
+                print(q, )
+                if q == 'SS':
+                    e = a['summon']
+
+                    print("Summon", e)
+                    if e not in character_data_formatted:
+                        emojis.append(e)
 
     random.shuffle(emojis)
 
@@ -160,12 +181,16 @@ def generate_emojis():
 
             print(emoji, (i + 1) / len(emojis) * 100)
             print(emoji_data)
+            new = True
+
             with open(LOAD_FILE, 'w') as f:
                 json.dump(character_data, f)
 
             # time.sleep(10)
         else:
             print("Failure with emoji", emoji)
+
+    return new
 
 
 def extract_attack(attack):
@@ -234,6 +259,12 @@ def reformat_emojis():
 
 
 if __name__ == '__main__':
-    generate_emojis()
+    new = True
 
-    reformat_emojis()
+    while new:
+        new = generate_emojis()
+
+        reformat_emojis()
+
+        if new:
+            print("NEW EMOJI GOING AGAIN")
