@@ -349,7 +349,9 @@ class User:
                 amount = move['amount']
 
                 if move['mode'] == 'F':
-                    self.hps[-1][0] += amount
+                    self.hps[-1][1] += amount
+
+                    self.hps[-1][1] = min(Game.EMOJIS[self.deck[self.hps[-1][0]]]['HP'] * 2,  self.hps[-1][1])
                 elif move['mode'] == 'N':
                     for i in range(len(self.hps)):
                         if self.hps[i][0] == i:
@@ -358,8 +360,12 @@ class User:
 
                             if prev > 0:
                                 self.hps[prev][1] += amount
+
+                                self.hps[prev][1] = min(Game.EMOJIS[self.deck[self.hps[prev][0]]]['HP'] * 2, self.hps[prev][1])
                             if ne < len(self.hps):
                                 self.hps[ne][1] += amount
+
+                                self.hps[ne][1] = min(Game.EMOJIS[self.deck[self.hps[ne][0]]]['HP'] * 2, self.hps[ne][1])
                 damage = False
 
             elif move['type'] == 'M':
@@ -406,14 +412,25 @@ class User:
                 self.deck.pop(i)
                 self.hps.pop(i)
 
+                summoned = -1
+
+                shift = 0
+
                 for s in specials:
                     if s['type'] == 'SS':
                         a = s['summon']
 
-                        self.deck.insert(i, a)
-                        self.hps.append([i, Game.EMOJIS[a]['HP'], 0])
+                        self.deck.insert(i + shift, a)
+                        self.hps.insert(i + shift, [i + shift, Game.EMOJIS[a]['HP'], 0])
 
                         summons.append(a)
+
+                        summoned += 1
+                        shift += 1
+
+                for index in range(len(self.hps)):
+                    if self.hps[index][0] > i + shift:
+                        self.hps[index][0] += summoned
 
             i -= 1
         return deaths, summons
@@ -424,18 +441,18 @@ class User:
         amount = move['amount']
 
         if move['type'] == 'M':
-            self.hps[-1][1] -= amount
+            self.hps[-1][1] += min(self.blocks[-1] - amount, 0)
 
         elif move['type'] == 'R':
             mode = move['mode']
 
             if mode == 'L':
-                self.hps[0][1] -= amount
+                self.hps[0][1] += min(self.blocks[0] - amount, 0)
             elif mode == 'F':
-                self.hps[-1][1] -= amount
+                self.hps[-1][1] += min(self.blocks[-1] - amount, 0)
             elif mode == 'A':
                 for i in range(len(self.hps)):
-                    self.hps[i][1] -= amount
+                    self.hps[i][1] += min(self.blocks[i] - amount, 0)
 
         deaths, summons = self.manage_hps()
 
@@ -474,6 +491,7 @@ class Game:
         self.user2.add('🤑')
         self.user2.add('🤐')
         self.user2.add('🥵')
+        self.user2.add('😇')
 
         self.count = 0
 
@@ -488,13 +506,18 @@ class Game:
     def prepare_game(self):
         self.reset_user_moves()
 
+    def reset_blocks(self, active_user):
+        for u in self.users:
+            if u == active_user:
+                u.reset_blocks()
+
     def step(self):
         print("USER's", self.user_flip, "TURN")
 
         current = self.users[self.user_flip]
-        current.reset_blocks()
-
         target = self.users[1 - self.user_flip]
+
+        self.reset_blocks(current)
 
         output = current.step()
         move, damage = output
@@ -511,10 +534,24 @@ class Game:
         self.user_flip = 1 - self.user_flip
         self.count += 1
 
+        print(target.blocks)
+
         return move
+
+    def winner(self):
+        if len(self.user1.hps) == 0:
+            return 1
+        elif len(self.user2.hps) == 0:
+            return 0
+        else:
+            return -1
+
+    def finished(self):
+        return self.winner() != -1 or (self.count // 2) > 30
 
 
 if __name__ == '__main__':
+    random.seed(42)
     generate = False
 
     if generate:
@@ -540,15 +577,18 @@ if __name__ == '__main__':
     client = EmojiGame(intents=intents)
 
     game = Game()
-    game.prepare_game()
 
-    for i in range(10):
+    for i in range(2):
+        game.prepare_game()
+
+        while not game.finished():
+            print(game.user1.hps, game.user2.hps)
+            print(game.user1.deck, game.user2.deck)
+            index, _, move = game.step()
+            print(index, move)
+            print()
+            print()
+
         print(game.user1.hps, game.user2.hps)
-        print(game.user1.deck, game.user2.deck)
-        print(game.step())
-        print()
-        print()
-
-    print(game.user1.hps, game.user2.hps)
 
     # client.run(BOT_TOKEN)
