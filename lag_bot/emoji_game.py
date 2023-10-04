@@ -4,7 +4,9 @@ import random
 import time
 from pprint import pprint
 
+import discord
 import openai
+from discord import Message
 from dotenv import load_dotenv
 import re
 
@@ -12,6 +14,7 @@ regex = r"^((?:R|SS|SH|SM|H|M|B))(?::(\d+(?:\.\d+)?))?(?:=|:)(?:(\d+)(?:,(A|N|F|
 load_dotenv('.env_emoji')
 
 OPEN_AI_KEY = os.getenv('OPEN_AI_KEY')
+BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 openai.api_key = OPEN_AI_KEY
 
@@ -115,7 +118,7 @@ def get_emoji_data(emoji: str, history: list):
         print(e.error)
 
 
-def generate_emojis():
+def generate_emojis(extra_emojis):
     start = 0x1f600
     end = 0x1f644
 
@@ -130,6 +133,8 @@ def generate_emojis():
         emojis.append(chr(start))
 
         start += 1
+
+    emojis.extend(extra_emojis)
 
     print(emojis)
 
@@ -153,7 +158,7 @@ def generate_emojis():
 
         for c, v in character_data_formatted.items():
             print(c)
-            for a in v['attacks']:
+            for a in v['specials']:
                 if a is None:
                     continue
 
@@ -166,6 +171,8 @@ def generate_emojis():
                     print("Summon", e)
                     if e not in character_data_formatted:
                         emojis.append(e)
+
+    print(emojis)
 
     random.shuffle(emojis)
 
@@ -246,11 +253,18 @@ def reformat_emojis():
 
         formatted_characters[c]['HP'] = int(attacks[0].split('=')[-1])
 
+        special_moves = []
+
         for attack in attacks[1:]:
             output = extract_attack(attack)
-            moves.append(output)
+
+            if output['type'].startswith("S"):
+                special_moves.append(output)
+            else:
+                moves.append(output)
 
         formatted_characters[c]['attacks'] = moves
+        formatted_characters[c]['specials'] = special_moves
 
     pprint(formatted_characters)
 
@@ -258,13 +272,283 @@ def reformat_emojis():
         json.dump(formatted_characters, f)
 
 
+class EmojiGame(discord.Client):
+    async def on_ready(self):
+        print(f'Logged on as {self.user}!')
+
+    async def on_message(self, message: Message):
+        if message.author.bot:
+            return
+
+
+class User:
+    def __init__(self, hp=10):
+        self.base_deck = []
+        self.rep = []
+        self.hp = hp
+
+        self.deck = []
+        self.hps = []
+        self.initial_ranges = []
+        self.blocks = []
+
+    def add(self, emoji):
+        self.base_deck.append(emoji)
+
+    def swap(self, index1, index2):
+        self.deck[index1], self.deck[index2] = self.deck[index2], self.deck[index1]
+
+    def reset(self):
+        self.deck = self.base_deck.copy()
+        self.hps = [[i, Game.EMOJIS[e]['HP'], 0] for i, e in enumerate(
+            self.deck)]  # TODO NEED TO MAKE THIS A COPY OF EMOJI REPRESENTATION ENHANCE DICTIONARY WITH EMOJI + EXTRA DAMMAGE QUANTIFIER
+        self.initial_ranges = self.ranges_moves()
+        self.reset_blocks()
+
+    def reset_blocks(self):
+        self.blocks = [0 for _ in range(len(self.deck))]
+
+    def step(self):
+        if len(self.initial_ranges) > 0:
+            return self.initial_ranges.pop(0), True
+        else:
+            first = max(self.hps, key=lambda x: x[0])[0]
+
+            emoji = self.deck[first]
+
+            emoji_ = Game.EMOJIS[emoji]
+
+            melee = []
+            prob = []
+
+            ranges = []
+            ranges_prob = []
+
+            for a in emoji_['attacks']:
+                if a['type'] == 'R':
+                    ranges.append(a)
+                    ranges_prob.append(a['p'])
+                else:
+                    melee.append(a)
+                    prob.append(a['p'])
+
+            if len(melee) > 0:
+                move = random.choices(melee, prob)
+            else:
+                move = random.choices(ranges, ranges_prob)
+
+            move = move[0]
+
+            damage = True
+
+            if move['type'] == 'B':
+                self.blocks[first] += move['amount']
+                damage = False
+
+            elif move['type'] == 'H':
+                amount = move['amount']
+
+                if move['mode'] == 'F':
+                    self.hps[-1][0] += amount
+                elif move['mode'] == 'N':
+                    for i in range(len(self.hps)):
+                        if self.hps[i][0] == i:
+                            prev = i - 1
+                            ne = i + 1
+
+                            if prev > 0:
+                                self.hps[prev][1] += amount
+                            if ne < len(self.hps):
+                                self.hps[ne][1] += amount
+                damage = False
+
+            elif move['type'] == 'M':
+                move = move.copy()
+                move['amount'] += self.hps[first][2]
+
+            return (first, emoji_, move), damage
+
+    def ranges_moves(self):
+        moves = []
+
+        range_moves = 0
+
+        for i, _, _ in self.hps:
+            e = self.deck[i]
+            emoji = Game.EMOJIS[e]
+
+            probabilities = [m['p'] for m in emoji['attacks']]
+            indexes = list(range(len(probabilities)))
+
+            choice = random.choices(indexes, weights=probabilities)[0]
+            move = emoji['attacks'][choice]
+
+            if move['type'] == "R":
+                moves.insert(range_moves, [i, e, move])
+                range_moves += 1
+
+        return moves
+
+    def manage_hps(self):
+        deaths = []
+        summons = []
+
+        i = len(self.hps) - 1
+
+        while i >= 0:
+            if self.hps[i][1] <= 0:
+                hp = self.hps[i]
+
+                deaths.append([hp[0], self.deck[hp[0]]])
+
+                specials = Game.EMOJIS[self.deck[hp[0]]]['specials']
+
+                self.deck.pop(i)
+                self.hps.pop(i)
+
+                for s in specials:
+                    if s['type'] == 'SS':
+                        a = s['summon']
+
+                        self.deck.insert(i, a)
+                        self.hps.append([i, Game.EMOJIS[a]['HP'], 0])
+
+                        summons.append(a)
+
+            i -= 1
+        return deaths, summons
+
+    def hit(self, move):
+        _, emoji, move = move
+
+        amount = move['amount']
+
+        if move['type'] == 'M':
+            self.hps[-1][1] -= amount
+
+        elif move['type'] == 'R':
+            mode = move['mode']
+
+            if mode == 'L':
+                self.hps[0][1] -= amount
+            elif mode == 'F':
+                self.hps[-1][1] -= amount
+            elif mode == 'A':
+                for i in range(len(self.hps)):
+                    self.hps[i][1] -= amount
+
+        deaths, summons = self.manage_hps()
+
+        return deaths, summons
+
+    def special(self, move):
+        index, _, _ = move
+        emoji = self.deck[index]
+
+        print("Checking specials for", emoji, index)
+
+        for s in Game.EMOJIS[emoji]['specials']:
+            if s['type'] == 'SH':
+                print("Performing Max Healing")
+                for i in range(len(self.hps)):
+                    if self.hps[i][0] == index:
+                        self.hps[i][1] += s['amount']
+            if s['type'] == 'SM':
+                print("Performing Max Attack")
+                for i in range(len(self.hps)):
+                    if self.hps[i][0] == index:
+                        self.hps[i][2] += s['amount']
+
+
+class Game:
+    EMOJIS = dict()
+
+    def __init__(self):
+        self.user1 = User()
+        self.user2 = User()
+
+        self.user1.add('😵')
+        self.user1.add('🥶')
+        self.user1.add('💀')
+
+        self.user2.add('🤑')
+        self.user2.add('🤐')
+        self.user2.add('🥵')
+
+        self.count = 0
+
+        self.users = [self.user1, self.user2]
+
+        self.user_flip = random.randint(0, len(self.users) - 1)
+
+    def reset_user_moves(self):
+        for u in self.users:
+            u.reset()
+
+    def prepare_game(self):
+        self.reset_user_moves()
+
+    def step(self):
+        print("USER's", self.user_flip, "TURN")
+
+        current = self.users[self.user_flip]
+        current.reset_blocks()
+
+        target = self.users[1 - self.user_flip]
+
+        output = current.step()
+        move, damage = output
+
+        if damage:
+            death, summons = target.hit(move)
+
+            if len(death) > 0:
+                print("DEATHS", death)
+                current.special(move)
+            if len(summons) > 0:
+                print("SUMMONS", summons)
+
+        self.user_flip = 1 - self.user_flip
+        self.count += 1
+
+        return move
+
+
 if __name__ == '__main__':
-    new = True
+    generate = False
 
-    while new:
-        new = generate_emojis()
+    if generate:
+        extra_emojis = ['🥶', '💀', '🤑', '🤐', '🥵']
+        new = True
 
-        reformat_emojis()
+        while new:
+            new = generate_emojis(extra_emojis)
 
-        if new:
-            print("NEW EMOJI GOING AGAIN")
+            reformat_emojis()
+
+            if new:
+                print("NEW EMOJI GOING AGAIN")
+
+    with open(FORMATTED_LOAD_FILE, 'r') as f:
+        Game.EMOJIS = json.load(f)
+
+    print("STARTING DISCORD")
+
+    intents = discord.Intents.default()
+    intents.message_content = True
+
+    client = EmojiGame(intents=intents)
+
+    game = Game()
+    game.prepare_game()
+
+    for i in range(10):
+        print(game.user1.hps, game.user2.hps)
+        print(game.user1.deck, game.user2.deck)
+        print(game.step())
+        print()
+        print()
+
+    print(game.user1.hps, game.user2.hps)
+
+    # client.run(BOT_TOKEN)
