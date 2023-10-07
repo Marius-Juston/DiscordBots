@@ -290,7 +290,7 @@ class User:
         self.blocks = []
 
     def add(self, emoji, index=None):
-        print(emoji, index)
+        # print(emoji, index)
         if index is None:
             self.base_deck.append(emoji)
         elif len(self.base_deck) < MAX_EMOJIS:
@@ -490,16 +490,16 @@ class User:
         index, _, _ = move
         emoji = self.deck[index]
 
-        print("Checking specials for", emoji, index)
+        # print("Checking specials for", emoji, index)
 
         for s in Game.EMOJIS[emoji]['specials']:
             if s['type'] == 'SH':
-                print("Performing Max Healing")
+                # print("Performing Max Healing")
                 for i in range(len(self.hps)):
                     if self.hps[i][0] == index:
                         self.hps[i][1] += s['amount']
             if s['type'] == 'SM':
-                print("Performing Max Attack")
+                # print("Performing Max Attack")
                 for i in range(len(self.hps)):
                     if self.hps[i][0] == index:
                         self.hps[i][2] += s['amount']
@@ -934,7 +934,7 @@ class EmojiGame(discord.Client):
 
         normal = info['attacks']
 
-        embed.add_field(name=e, value="", inline=False)
+        embed.add_field(name=e, value=f"HP={info['HP']}", inline=False)
 
         string = []
         for a in normal:
