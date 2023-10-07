@@ -844,13 +844,13 @@ class EmojiGame(discord.Client):
                               description=f"Description of the Emojis for {user.discord_user.mention}'s deck and shop.",
                               color=discord.Color.light_gray())
 
-        embed.add_field(name="Base Deck", value="", inline=False)
+        embed.add_field(name="__**Base Deck**__", value="", inline=False)
 
         for e in user.base_deck:
             e: str
             self.generate_character_sheet(embed, e)
 
-        embed.add_field(name="Shop", value="", inline=False)
+        embed.add_field(name="__**Shop**__", value="", inline=False)
 
         for e in user.game.user_shop[user]:
             self.generate_character_sheet(embed, e)
