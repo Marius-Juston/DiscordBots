@@ -3,10 +3,11 @@ import os
 import random
 import time
 from pprint import pprint
+from typing import List
 
 import discord
 import openai
-from discord import Message
+from discord import Message, Member, Reaction, TextChannel
 from dotenv import load_dotenv
 import re
 
@@ -272,17 +273,10 @@ def reformat_emojis():
         json.dump(formatted_characters, f)
 
 
-class EmojiGame(discord.Client):
-    async def on_ready(self):
-        print(f'Logged on as {self.user}!')
-
-    async def on_message(self, message: Message):
-        if message.author.bot:
-            return
-
-
 class User:
-    def __init__(self, hp=10):
+    def __init__(self, game, discord_user: Member, hp=10):
+        self.game = game
+        self.discord_user = discord_user
         self.base_deck = []
         self.rep = []
         self.hp = hp
@@ -292,11 +286,20 @@ class User:
         self.initial_ranges = []
         self.blocks = []
 
-    def add(self, emoji):
-        self.base_deck.append(emoji)
+    def add(self, emoji, index=None):
+        print(emoji, index)
+        if index is None:
+            self.base_deck.append(emoji)
+        elif index < len(self.base_deck):
+            self.replace(emoji, index)
+        else:
+            self.base_deck.append(emoji)
 
     def swap(self, index1, index2):
-        self.deck[index1], self.deck[index2] = self.deck[index2], self.deck[index1]
+        self.base_deck[index1], self.base_deck[index2] = self.base_deck[index2], self.base_deck[index1]
+
+    def replace(self, emoji, index):
+        self.base_deck[index] = emoji
 
     def reset(self):
         self.deck = self.base_deck.copy()
@@ -351,7 +354,7 @@ class User:
                 if move['mode'] == 'F':
                     self.hps[-1][1] += amount
 
-                    self.hps[-1][1] = min(Game.EMOJIS[self.deck[self.hps[-1][0]]]['HP'] * 2,  self.hps[-1][1])
+                    self.hps[-1][1] = min(Game.EMOJIS[self.deck[self.hps[-1][0]]]['HP'] * 2, self.hps[-1][1])
                 elif move['mode'] == 'N':
                     for i in range(len(self.hps)):
                         if self.hps[i][0] == i:
@@ -361,11 +364,13 @@ class User:
                             if prev > 0:
                                 self.hps[prev][1] += amount
 
-                                self.hps[prev][1] = min(Game.EMOJIS[self.deck[self.hps[prev][0]]]['HP'] * 2, self.hps[prev][1])
+                                self.hps[prev][1] = min(Game.EMOJIS[self.deck[self.hps[prev][0]]]['HP'] * 2,
+                                                        self.hps[prev][1])
                             if ne < len(self.hps):
                                 self.hps[ne][1] += amount
 
-                                self.hps[ne][1] = min(Game.EMOJIS[self.deck[self.hps[ne][0]]]['HP'] * 2, self.hps[ne][1])
+                                self.hps[ne][1] = min(Game.EMOJIS[self.deck[self.hps[ne][0]]]['HP'] * 2,
+                                                      self.hps[ne][1])
                 damage = False
 
             elif move['type'] == 'M':
@@ -480,9 +485,9 @@ class User:
 class Game:
     EMOJIS = dict()
 
-    def __init__(self):
-        self.user1 = User()
-        self.user2 = User()
+    def __init__(self, users: List[Member]):
+        self.user1 = User(self, users[0])
+        self.user2 = User(self, users[1])
 
         self.user1.add('😵')
         self.user1.add('🥶')
@@ -497,7 +502,33 @@ class Game:
 
         self.users = [self.user1, self.user2]
 
+        self.member = dict(zip(users, self.users))
+
         self.user_flip = random.randint(0, len(self.users) - 1)
+
+        self.money_per_user = dict()
+        self.done_shop_per_user = dict()
+
+        self.user_shop = {}
+        self.reset_shop()
+        self.reset_done_buying(True)
+
+    def reset_shop(self):
+        self.reset_money()
+        self.reset_done_buying()
+
+        for user in self.users:
+            self.shop(user)
+
+    def finished_shopping(self, user):
+        if user in self.done_shop_per_user:
+            self.done_shop_per_user[user] = True
+
+    def shop_is_done(self):
+        return all(self.done_shop_per_user.values())
+
+    def get_user(self, discord_member):
+        return self.member[discord_member]
 
     def reset_user_moves(self):
         for u in self.users:
@@ -546,8 +577,220 @@ class Game:
         else:
             return -1
 
+    def shop(self, user):
+        emojis_to_buy = random.choices(list(self.EMOJIS.keys()), k=4)
+
+        self.user_shop[user] = emojis_to_buy
+
+        return emojis_to_buy
+
+    def purchase(self, user):
+        if self.money_per_user[user] >= 3:
+            self.money_per_user[user] -= 3
+
+            return True
+        return False
+
+    def reroll(self, user):
+        if self.money_per_user[user] >= 3:
+            self.purchase(user)
+            return self.shop(user)
+
+        return None
+
+    def buy_emoji(self, user: User, emoji: str, place_index: int):
+        index = self.user_shop[user].index(emoji)
+
+        if index != -1 and self.purchase(user):
+            emoji = self.user_shop[user].pop(index)
+
+            user.add(emoji, place_index)
+
+            return True
+        return False
+
     def finished(self):
         return self.winner() != -1 or (self.count // 2) > 30
+
+    def reset_money(self):
+        self.money_per_user = dict((u, 9) for u in self.users)
+
+    def reset_done_buying(self, val=False):
+        self.done_shop_per_user = dict((u, val) for u in self.users)
+
+
+class EmojiGame(discord.Client):
+    async def on_ready(self):
+        print(f'Logged on as {self.user}!')
+
+        self.running_games = dict()
+        self.game_messages = dict()
+
+    async def on_reaction_add(self, reaction: Reaction, user):
+        if user == self.user:
+            return
+
+        message = reaction.message
+
+        if message not in self.game_messages:
+            return
+
+        game_user = self.game_messages[message]
+
+        if not game_user.discord_user == user:
+            return
+
+        game: Game = game_user.game
+
+        if reaction.emoji == '🐛':
+            for e in game.user_shop[game_user]:
+                print(e)
+                await message.add_reaction(e)
+            return
+
+        if reaction.emoji == '🔁':
+            rerolled = game.reroll(game_user)
+
+            if rerolled:
+                await self.display_shop(message.channel, game_user.game, game_user)
+            else:
+                await reaction.message.channel.send(
+                    f"{game_user.discord_user.mention} Unable to reroll, not enough money!")
+
+            return
+
+        if reaction.emoji == "✅":
+            game.finished_shopping(game_user)
+
+            other_user: User = game.users[1 - game.users.index(game_user)]
+
+            await message.channel.send(f"{game_user.discord_user.mention} Finished shopping!")
+
+            if other_user.discord_user == self.user:
+                game.finished_shopping(other_user)
+                await message.channel.send(f"{other_user.discord_user.mention} Finished shopping!")
+
+        if game.shop_is_done():
+            await self.play_game(message.channel, game)
+
+            return
+
+        counter = ["1️⃣", "2️⃣", "3️⃣", "4️⃣"]
+
+        emoji = None
+
+        index = None
+
+        avalaible_shop_emojis = game_user.game.user_shop[game_user]
+
+        for reaction in message.reactions:
+            if reaction.count > 1:
+                if reaction.emoji in avalaible_shop_emojis:
+                    emoji = reaction.emoji
+                elif reaction.emoji in counter:
+                    index = counter.index(reaction.emoji)
+
+        if not emoji is None and not index is None:
+            print(emoji, index)
+            bought = game.buy_emoji(game_user, emoji, index)
+
+            if bought:
+                await reaction.message.channel.send(
+                    f"{game_user.discord_user.mention} Bought {emoji} putting it in index {index}")
+                await self.display_shop(message.channel, game_user.game, game_user)
+            else:
+                await reaction.message.channel.send(f"{game_user.discord_user.mention} Unable to buy {emoji}")
+
+    async def display_shop(self, channel: discord.channel.TextChannel, game, user: User):
+        shop_items = game.user_shop[user]
+
+        embed = discord.Embed(title="Shop",
+                              description=f"This is user {user.discord_user.mention}'s shop",
+                              color=discord.Color.yellow())
+
+        embed.add_field(name="Money", value=str(game.money_per_user[user]))
+        embed.add_field(name="Current Deck", value=" ".join(user.base_deck))
+        embed.add_field(name="Emojis", value=" ".join(shop_items), inline=False)
+
+        message = await channel.send(embed=embed)
+
+        time.sleep(1)
+
+        for e in shop_items:
+            await message.add_reaction(e)
+
+        await message.add_reaction("1️⃣")
+        await message.add_reaction("2️⃣")
+        await message.add_reaction("3️⃣")
+        await message.add_reaction("4️⃣")
+        await message.add_reaction("🔁")
+        # await message.add_reaction('🐛')
+
+        await message.add_reaction("✅")
+
+        self.game_messages[message] = user
+
+    async def on_message(self, message: Message):
+        if message.author.bot:
+            return
+
+        playing_users = {message.author}
+
+        if len(message.mentions) > 0:
+            if not message.mentions[0] == self.user:
+                return
+
+            if not len(message.mentions) == 1 and not len(message.mentions) == 2:
+                await message.channel.send("Please either mention 1 or 2 users to play with.")
+                return
+
+            if len(message.mentions) == 1:
+                playing_users.add(self.user)
+            else:
+                playing_users.add(message.mentions[1])
+
+        playing_users = frozenset(playing_users)
+
+        if playing_users not in self.running_games:
+            await message.channel.send("Thank you for playing 'Emoji game'™©®")
+
+            game = Game(list(playing_users))
+            self.running_games[playing_users] = game
+        else:
+            game = self.running_games[playing_users]
+
+        await self.reset_shop(message.channel, game)
+
+    async def reset_shop(self, channel, game):
+        if game.shop_is_done():
+            game.reset_shop()
+
+        for user in game.users:
+            await self.display_shop(channel, game, user)
+
+    async def play_game(self, channel: TextChannel, game: Game):
+        user_mentioned = " ".join(u.discord_user.mention for u in game.users)
+
+        await channel.send(f'{user_mentioned} Running game!')
+        game.prepare_game()
+
+        while not game.finished():
+            print(game.user1.hps, game.user2.hps)
+            print(game.user1.deck, game.user2.deck)
+            index, _, move = game.step()
+            print(index, move)
+            print()
+            print()
+
+        print(game.user1.hps, game.user2.hps)
+
+        if game.finished() == -1:
+            await channel.send(f'The game ended in a draw.')
+
+        else:
+            await channel.send(f'The winner is {game.users[game.finished()].discord_user.mention}.')
+
+        await self.reset_shop(channel, game)
 
 
 if __name__ == '__main__':
@@ -576,19 +819,4 @@ if __name__ == '__main__':
 
     client = EmojiGame(intents=intents)
 
-    game = Game()
-
-    for i in range(2):
-        game.prepare_game()
-
-        while not game.finished():
-            print(game.user1.hps, game.user2.hps)
-            print(game.user1.deck, game.user2.deck)
-            index, _, move = game.step()
-            print(index, move)
-            print()
-            print()
-
-        print(game.user1.hps, game.user2.hps)
-
-    # client.run(BOT_TOKEN)
+    client.run(BOT_TOKEN)
