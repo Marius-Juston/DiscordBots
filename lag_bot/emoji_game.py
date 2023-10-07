@@ -30,6 +30,7 @@ system = {
 USE_HISTORY = False
 
 MAX_EMOJIS = 4
+MAX_CHARACTER_LENGTH = 1500
 
 
 # define a retry decorator
@@ -584,7 +585,8 @@ class Game:
         move, damage = output
 
         self.text_data.append(
-            f"{move[1]} {move[2]['text']} for {move[2]['type']}={move[2]['amount']}" + ( f",{move[2]['mode']}" if 'mode' in move[2] else ''))
+            f"{move[1]} {move[2]['text']} for {move[2]['type']}={move[2]['amount']}" + (
+                f",{move[2]['mode']}" if 'mode' in move[2] else ''))
 
         if damage:
             death, summons = target.hit(move)
@@ -836,11 +838,24 @@ class EmojiGame(discord.Client):
         for user in game.users:
             await self.display_shop(channel, game, user)
 
+    async def show_users(self, channel, game):
+        embed = discord.Embed(title="Users",
+                              color=discord.Color.red())
+
+        for u in game.users:
+            embed.add_field(name=f'__**{u.discord_user.display_name}**__', value='', inline=False)
+            embed.add_field(name="HP", value=u.hp)
+            embed.add_field(name="Deck", value=" ".join(u.base_deck))
+
+        await channel.send(embed=embed)
+
     async def play_game(self, channel: TextChannel, game: Game):
         user_mentioned = " ".join(u.discord_user.mention for u in game.users)
 
         await channel.send(f'{user_mentioned} Running game!')
         game.prepare_game()
+
+        await self.show_users(channel, game)
 
         while not game.finished():
             print(game.user1.hps, game.user2.hps)
@@ -855,8 +870,6 @@ class EmojiGame(discord.Client):
         lengths = [len(t) for t in game.text_data[::-1]]
 
         text_data = game.text_data
-
-        MAX_CHARACTER_LENGTH = 1500
 
         if sum(lengths) > MAX_CHARACTER_LENGTH:
             text_data = []
@@ -886,12 +899,34 @@ class EmojiGame(discord.Client):
             await channel.send(info)
 
         if game.winner() == -1:
-            await channel.send(f'The game ended in a draw.')
+            for u in game.users:
+                u.hp -= 1
 
+            await channel.send(f'The game ended in a draw.')
         else:
+            game.users[1 - game.winner()].hp -= 3
+
             await channel.send(f'The winner is {game.users[game.winner()].discord_user.mention}.')
 
-        await self.reset_shop(channel, game)
+        await self.show_users(channel, game)
+
+        hps = [u.hp <= 0 for u in game.users]
+
+        if any(hps):
+            if all(hps):
+                await channel.send(f"{user_mentioned} THE GAME HAS ENDED THERE IS NO WINNER")
+            else:
+                index = hps.index(False)
+                m = game.users[index].discord_user.mention
+
+                await channel.send(f"{user_mentioned} THE GAME HAS ENDED THE WINNER IS {m}")
+
+            data = frozenset(set(u.discord_user for u in game.users))
+            del self.running_games[data]
+
+            print("RUNNING GAMES", self.running_games)
+        else:
+            await self.reset_shop(channel, game)
 
     def generate_character_sheet(self, embed, e):
         info = Game.EMOJIS[e]
