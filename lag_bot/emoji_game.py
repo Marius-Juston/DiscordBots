@@ -493,14 +493,14 @@ class Game:
         self.user1 = User(self, users[0])
         self.user2 = User(self, users[1])
 
-        self.user1.add('😵')
-        self.user1.add('🥶')
-        self.user1.add('💀')
-
-        self.user2.add('🤑')
-        self.user2.add('🤐')
-        self.user2.add('🥵')
-        self.user2.add('😇')
+        # self.user1.add('😵')
+        # self.user1.add('🥶')
+        # self.user1.add('💀')
+        #
+        # self.user2.add('🤑')
+        # self.user2.add('🤐')
+        # self.user2.add('🥵')
+        # self.user2.add('😇')
 
         self.count = 0
 
@@ -808,11 +808,11 @@ class EmojiGame(discord.Client):
 
         print(game.user1.hps, game.user2.hps)
 
-        if game.finished() == -1:
+        if game.winner() == -1:
             await channel.send(f'The game ended in a draw.')
 
         else:
-            await channel.send(f'The winner is {game.users[game.finished()].discord_user.mention}.')
+            await channel.send(f'The winner is {game.users[game.winner()].discord_user.mention}.')
 
         await self.reset_shop(channel, game)
 
