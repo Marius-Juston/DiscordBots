@@ -381,7 +381,7 @@ class User:
                 move = move.copy()
                 move['amount'] += self.hps[first][2]
 
-            return (first, emoji_, move), damage
+            return (first, self.deck[first], move), damage
 
     def ranges_moves(self):
         moves = []
@@ -449,19 +449,37 @@ class User:
 
         amount = move['amount']
 
+        damage = 0
+
         if move['type'] == 'M':
-            self.hps[-1][1] += min(self.blocks[-1] - amount, 0)
+            damage = min(self.blocks[-1] - amount, 0)
+
+            self.game.text_data.append(f"{self.deck[-1]} was dealt melee damage of {damage}")
+
+            self.hps[-1][1] += damage
 
         elif move['type'] == 'R':
             mode = move['mode']
 
             if mode == 'L':
-                self.hps[0][1] += min(self.blocks[0] - amount, 0)
+                damage = min(self.blocks[0] - amount, 0)
+
+                self.game.text_data.append(f"{self.deck[0]} was dealt range damage of {damage}")
+
+                self.hps[0][1] += damage
             elif mode == 'F':
-                self.hps[-1][1] += min(self.blocks[-1] - amount, 0)
+                damage = min(self.blocks[-1] - amount, 0)
+
+                self.game.text_data.append(f"{self.deck[-1]} was dealt range damage of {damage}")
+
+                self.hps[-1][1] += damage
             elif mode == 'A':
                 for i in range(len(self.hps)):
-                    self.hps[i][1] += min(self.blocks[i] - amount, 0)
+                    damage = min(self.blocks[i] - amount, 0)
+
+                    self.game.text_data.append(f"{self.deck[i]} was dealt range damage of {damage}")
+
+                    self.hps[i][1] += damage
 
         deaths, summons = self.manage_hps()
 
@@ -497,7 +515,7 @@ class Game:
         # self.user1.add('🥶')
         # self.user1.add('💀')
         #
-        # self.user2.add('🤑')
+        self.user2.add('🤑')
         # self.user2.add('🤐')
         # self.user2.add('🥵')
         # self.user2.add('😇')
@@ -516,6 +534,8 @@ class Game:
         self.user_shop = {}
         self.reset_shop()
         self.reset_done_buying(True)
+
+        self.text_data = []
 
     def reset_shop(self):
         self.reset_money()
@@ -541,6 +561,10 @@ class Game:
     def prepare_game(self):
         self.reset_user_moves()
 
+        self.user_flip = random.randint(0, len(self.users) - 1)
+
+        self.text_data = []
+
     def reset_blocks(self, active_user):
         for u in self.users:
             if u == active_user:
@@ -552,19 +576,39 @@ class Game:
         current = self.users[self.user_flip]
         target = self.users[1 - self.user_flip]
 
+        self.text_data.append(f"{current.discord_user.display_name}'s turn")
+
         self.reset_blocks(current)
 
         output = current.step()
         move, damage = output
 
+        self.text_data.append(
+            f"{move[1]} {move[2]['text']} for {move[2]['type']}={move[2]['amount']}" + ( f",{move[2]['mode']}" if 'mode' in move[2] else ''))
+
         if damage:
             death, summons = target.hit(move)
 
             if len(death) > 0:
+                self.text_data.extend([f'{e[1]} was killed' for e in death])
                 print("DEATHS", death)
                 current.special(move)
             if len(summons) > 0:
+                self.text_data.append(f"{current.discord_user.display_name} summons:")
+                self.text_data.extend([f'{e} was summoned' for e in summons])
                 print("SUMMONS", summons)
+
+        self.text_data.append("End of round healths: ")
+
+        text = ''
+        for e, hp in zip(current.deck, current.hps):
+            text += f'{e}={hp[1]} '
+
+        text += '\n'
+        for e, hp in zip(target.deck, target.hps):
+            text += f'{e}={hp[1]} '
+
+        self.text_data.append(text)
 
         self.user_flip = 1 - self.user_flip
         self.count += 1
@@ -808,6 +852,39 @@ class EmojiGame(discord.Client):
 
         print(game.user1.hps, game.user2.hps)
 
+        lengths = [len(t) for t in game.text_data[::-1]]
+
+        text_data = game.text_data
+
+        MAX_CHARACTER_LENGTH = 1500
+
+        if sum(lengths) > MAX_CHARACTER_LENGTH:
+            text_data = []
+
+            total_count = 0
+
+            data = game.text_data[::-1]
+
+            i = 0
+            while i < len(data):
+                d = data[i]
+                l = len(d)
+
+                if total_count + l < MAX_CHARACTER_LENGTH:
+                    text_data.append(d)
+                    total_count += l
+                else:
+                    break
+
+                i += 1
+
+            text_data = text_data[::-1]
+
+        if len(text_data) > 0:
+            info = "```" + "\n".join(text_data) + "```"
+
+            await channel.send(info)
+
         if game.winner() == -1:
             await channel.send(f'The game ended in a draw.')
 
@@ -859,7 +936,7 @@ class EmojiGame(discord.Client):
 
 
 if __name__ == '__main__':
-    random.seed(42)
+    # random.seed(42)
     generate = False
 
     if generate:
