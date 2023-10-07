@@ -29,6 +29,8 @@ system = {
 
 USE_HISTORY = False
 
+MAX_EMOJIS = 4
+
 
 # define a retry decorator
 def retry_with_exponential_backoff(
@@ -290,6 +292,8 @@ class User:
         print(emoji, index)
         if index is None:
             self.base_deck.append(emoji)
+        elif len(self.base_deck) < MAX_EMOJIS:
+            self.base_deck.insert(index, emoji)
         elif index < len(self.base_deck):
             self.replace(emoji, index)
         else:
@@ -648,6 +652,9 @@ class EmojiGame(discord.Client):
                 await message.add_reaction(e)
             return
 
+        if reaction.emoji == '📃':
+            await self.show_emoji_info(message.channel, game_user)
+
         if reaction.emoji == '🔁':
             rerolled = game.reroll(game_user)
 
@@ -665,6 +672,8 @@ class EmojiGame(discord.Client):
             other_user: User = game.users[1 - game.users.index(game_user)]
 
             await message.channel.send(f"{game_user.discord_user.mention} Finished shopping!")
+
+            del self.game_messages[message]
 
             if other_user.discord_user == self.user:
                 game.finished_shopping(other_user)
@@ -714,8 +723,6 @@ class EmojiGame(discord.Client):
 
         message = await channel.send(embed=embed)
 
-        time.sleep(1)
-
         for e in shop_items:
             await message.add_reaction(e)
 
@@ -725,6 +732,7 @@ class EmojiGame(discord.Client):
         await message.add_reaction("4️⃣")
         await message.add_reaction("🔁")
         # await message.add_reaction('🐛')
+        await message.add_reaction('📃')
 
         await message.add_reaction("✅")
 
@@ -746,8 +754,24 @@ class EmojiGame(discord.Client):
 
             if len(message.mentions) == 1:
                 playing_users.add(self.user)
+
+                e = re.sub("<[@#!&](.*?)>", "", message.content).strip()
+
+                if e in Game.EMOJIS:
+                    embed = discord.Embed(title="Emoji Info",
+                                          description=f"Info for {e}",
+                                          color=discord.Color.light_grey())
+
+                    self.generate_character_sheet(embed, e)
+
+                    await message.channel.send(embed=embed)
+
+                    return
+
             else:
                 playing_users.add(message.mentions[1])
+        else:
+            return
 
         playing_users = frozenset(playing_users)
 
@@ -791,6 +815,47 @@ class EmojiGame(discord.Client):
             await channel.send(f'The winner is {game.users[game.finished()].discord_user.mention}.')
 
         await self.reset_shop(channel, game)
+
+    def generate_character_sheet(self, embed, e):
+        info = Game.EMOJIS[e]
+
+        normal = info['attacks']
+
+        embed.add_field(name=e, value="", inline=False)
+
+        string = []
+        for a in normal:
+            string.append(f'{a["type"]}:{a["p"]}={a["amount"]}' + (f",{a['mode']}" if "mode" in a else ""))
+
+        embed.add_field(name="Normal", value="\n".join(string), inline=True)
+
+        special = info['specials']
+        string = []
+        for a in special:
+            if a['type'] == "SS":
+                string.append(f'{a["type"]}={a["summon"]}')
+            else:
+                string.append(f'{a["type"]}={a["amount"]}')
+
+        embed.add_field(name="Specials", value="\n".join(string), inline=True)
+
+    async def show_emoji_info(self, channel, user):
+        embed = discord.Embed(title="Emoji Info",
+                              description=f"Description of the Emojis for {user.discord_user.mention}'s deck and shop.",
+                              color=discord.Color.light_gray())
+
+        embed.add_field(name="Base Deck", value="", inline=False)
+
+        for e in user.base_deck:
+            e: str
+            self.generate_character_sheet(embed, e)
+
+        embed.add_field(name="Shop", value="", inline=False)
+
+        for e in user.game.user_shop[user]:
+            self.generate_character_sheet(embed, e)
+
+        await channel.send(embed=embed)
 
 
 if __name__ == '__main__':
