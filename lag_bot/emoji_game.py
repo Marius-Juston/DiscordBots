@@ -572,7 +572,7 @@ class Game:
                 u.reset_blocks()
 
     def step(self):
-        print("USER's", self.user_flip, "TURN")
+        # print("USER's", self.user_flip, "TURN")
 
         current = self.users[self.user_flip]
         target = self.users[1 - self.user_flip]
@@ -593,12 +593,12 @@ class Game:
 
             if len(death) > 0:
                 self.text_data.extend([f'{e[1]} was killed' for e in death])
-                print("DEATHS", death)
+                # print("DEATHS", death)
                 current.special(move)
             if len(summons) > 0:
                 self.text_data.append(f"{current.discord_user.display_name} summons:")
                 self.text_data.extend([f'{e} was summoned' for e in summons])
-                print("SUMMONS", summons)
+                # print("SUMMONS", summons)
 
         self.text_data.append("End of round healths: ")
 
@@ -611,11 +611,12 @@ class Game:
             text += f'{e}={hp[1]} '
 
         self.text_data.append(text)
+        self.text_data.append('')
 
         self.user_flip = 1 - self.user_flip
         self.count += 1
 
-        print(target.blocks)
+        # print(target.blocks)
 
         return move
 
@@ -694,7 +695,7 @@ class EmojiGame(discord.Client):
 
         if reaction.emoji == '🐛':
             for e in game.user_shop[game_user]:
-                print(e)
+                # print(e)
                 await message.add_reaction(e)
             return
 
@@ -746,7 +747,7 @@ class EmojiGame(discord.Client):
                     index = counter.index(reaction.emoji)
 
         if not emoji is None and not index is None:
-            print(emoji, index)
+            # print(emoji, index)
             bought = game.buy_emoji(game_user, emoji, index)
 
             if bought:
@@ -858,14 +859,14 @@ class EmojiGame(discord.Client):
         await self.show_users(channel, game)
 
         while not game.finished():
-            print(game.user1.hps, game.user2.hps)
-            print(game.user1.deck, game.user2.deck)
+            # print(game.user1.hps, game.user2.hps)
+            # print(game.user1.deck, game.user2.deck)
             index, _, move = game.step()
-            print(index, move)
-            print()
-            print()
+            # print(index, move)
+            # print()
+            # print()
 
-        print(game.user1.hps, game.user2.hps)
+        # print(game.user1.hps, game.user2.hps)
 
         lengths = [len(t) for t in game.text_data[::-1]]
 
