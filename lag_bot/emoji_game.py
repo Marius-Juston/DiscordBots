@@ -515,8 +515,8 @@ class Game:
         # self.user1.add('😵')
         # self.user1.add('🥶')
         # self.user1.add('💀')
-        #
-        self.user2.add('🤑')
+
+        # self.user2.add('🤑')
         # self.user2.add('🤐')
         # self.user2.add('🥵')
         # self.user2.add('😇')
