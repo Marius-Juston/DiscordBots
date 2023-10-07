@@ -934,7 +934,7 @@ class EmojiGame(discord.Client):
 
         normal = info['attacks']
 
-        embed.add_field(name=e, value=f"HP={info['HP']}", inline=False)
+        embed.add_field(name=f"{e}, HP={info['HP']}", value='', inline=False)
 
         string = []
         for a in normal:
