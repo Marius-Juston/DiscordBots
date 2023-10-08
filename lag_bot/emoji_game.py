@@ -981,7 +981,7 @@ class EmojiGame(discord.Client):
 
 if __name__ == '__main__':
     # random.seed(42)
-    generate = True
+    generate = False
 
     if generate:
         extra_emojis = ['🥶', '💀', '🤑', '🤐', '🥵']
@@ -1020,9 +1020,9 @@ if __name__ == '__main__':
 
     print("STARTING DISCORD")
 
-    # intents = discord.Intents.default()
-    # intents.message_content = True
-    #
-    # client = EmojiGame(intents=intents)
-    #
-    # client.run(BOT_TOKEN)
+    intents = discord.Intents.default()
+    intents.message_content = True
+
+    client = EmojiGame(intents=intents)
+
+    client.run(BOT_TOKEN)
