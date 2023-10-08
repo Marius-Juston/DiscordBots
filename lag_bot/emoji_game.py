@@ -423,6 +423,12 @@ class User:
 
                 deaths.append([hp[0], self.deck[hp[0]]])
 
+                if len(self.initial_ranges) > 0:
+                    for at in range(len(self.initial_ranges)):
+                        if self.initial_ranges[at][0] == i:
+                            self.initial_ranges.pop(at)
+                            break
+
                 specials = Game.EMOJIS[self.deck[hp[0]]]['specials']
 
                 self.deck.pop(i)
@@ -495,9 +501,9 @@ class User:
     def special(self, move):
         index, _, _ = move
 
-        if index >= len(self.deck):
-            print("ERROR Index out of Bound", self.deck, index)
-            return
+        # if index >= len(self.deck):
+        #     print("ERROR Index out of Bound", self.deck, index)
+        #     return
 
         emoji = self.deck[index]
 
@@ -505,11 +511,13 @@ class User:
 
         for s in Game.EMOJIS[emoji]['specials']:
             if s['type'] == 'SH':
+                self.game.text_data.append(f"{emoji} {s['text']} by {s['amount']}")
                 # print("Performing Max Healing")
                 for i in range(len(self.hps)):
                     if self.hps[i][0] == index:
                         self.hps[i][1] += s['amount']
-            if s['type'] == 'SM':
+            elif s['type'] == 'SM':
+                self.game.text_data.append(f"{emoji} {s['text']} by {s['amount']}")
                 # print("Performing Max Attack")
                 for i in range(len(self.hps)):
                     if self.hps[i][0] == index:
@@ -523,14 +531,15 @@ class Game:
         self.user1 = User(self, users[0])
         self.user2 = User(self, users[1])
 
-        # self.user1.add('😵')
-        # self.user1.add('🥶')
-        # self.user1.add('💀')
-
-        # self.user2.add('🤑')
-        # self.user2.add('🤐')
-        # self.user2.add('🥵')
-        # self.user2.add('😇')
+        # self.user1.add('🤠')
+        # self.user1.add('🌞')
+        # self.user1.add('🐆')
+        # self.user1.add('🐯')
+        #
+        # self.user2.add('☃️')
+        # self.user2.add('🥶')
+        # self.user2.add('🐻')
+        # self.user2.add('☠️')
 
         self.count = 0
 
@@ -1109,6 +1118,22 @@ if __name__ == '__main__':
         Game.EMOJIS = json.load(f)
 
     print("STARTING DISCORD")
+
+
+    # class Temp:
+    #     def __init__(self, name):
+    #         self.display_name = name
+
+
+    # random.seed(42)
+    # game = Game([Temp("A"), Temp("B")])
+    #
+    # game.prepare_game()
+    #
+    # while not game.finished():
+    #     game.step()
+    #
+    # print(game.text_data)
 
     intents = discord.Intents.default()
     intents.message_content = True
