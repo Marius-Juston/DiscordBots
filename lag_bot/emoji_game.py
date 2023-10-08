@@ -494,6 +494,11 @@ class User:
 
     def special(self, move):
         index, _, _ = move
+
+        if index >= len(self.deck):
+            print("ERROR Index out of Bound", self.deck, index)
+            return
+
         emoji = self.deck[index]
 
         # print("Checking specials for", emoji, index)
@@ -747,7 +752,6 @@ class Game:
             if continue_buying:
                 await channel.send(
                     f"{other_user.discord_user.mention} Bought {emoji} putting it in index {index}")
-
 
         if continue_buying:
             await self.ai_purchase(channel, other_user)
