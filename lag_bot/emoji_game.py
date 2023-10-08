@@ -34,6 +34,8 @@ MAX_CHARACTER_LENGTH = 1500
 
 MAX_RUNS = 200
 
+GAME_RECORDS = "games.json"
+
 
 # define a retry decorator
 def retry_with_exponential_backoff(
@@ -773,6 +775,12 @@ class EmojiGame(discord.Client):
         self.running_games = dict()
         self.game_messages = dict()
 
+        if os.path.exists(GAME_RECORDS):
+            with open(GAME_RECORDS, 'r') as f:
+                self.game_records = json.load(f)
+        else:
+            self.game_records = dict()
+
     async def on_reaction_add(self, reaction: Reaction, user):
         if user == self.user:
             return
@@ -855,6 +863,55 @@ class EmojiGame(discord.Client):
             else:
                 await reaction.message.channel.send(f"{game_user.discord_user.mention} Unable to buy {emoji}")
 
+    def record_game(self, game):
+        end = game.winner()
+
+        for u in game.users:
+            u1 = str(u.discord_user.id)
+            if u1 not in self.game_records:
+                self.game_records[u1] = {
+                    'wins': 0,
+                    'total': 0,
+                    'draws': 0,
+                    'losses': 0,
+                    'games': {}
+                }
+
+        for i, u in enumerate(game.users):
+            u1 = str(u.discord_user.id)
+
+            if end == -1:
+                self.game_records[u1]['draws'] += 1
+            elif end == i:
+                self.game_records[u1]['wins'] += 1
+            else:
+                self.game_records[u1]['losses'] += 1
+
+            other = str(game.users[1 - i].discord_user.id)
+
+            if other not in self.game_records[u1]['games']:
+                self.game_records[u1]['games'][other] = {
+                    'wins': 0,
+                    'losses': 0,
+                    'draws': 0,
+                    'total': 0
+                }
+
+            battle_data = self.game_records[u1]['games'][other]
+
+            if end == -1:
+                battle_data['draws'] += 1
+            elif end == i:
+                battle_data['wins'] += 1
+            else:
+                battle_data['losses'] += 1
+
+            self.game_records[u1]['total'] += 1
+            battle_data['total'] += 1
+
+        with open(GAME_RECORDS, 'w') as f:
+            json.dump(self.game_records, f)
+
     async def display_shop(self, channel: discord.channel.TextChannel, game, user: User):
         shop_items = game.user_shop[user]
 
@@ -910,6 +967,36 @@ class EmojiGame(discord.Client):
                     self.generate_character_sheet(embed, e)
 
                     await message.channel.send(embed=embed)
+
+                    return
+                elif e == "stat":
+                    user_id = str(message.author.id)
+
+                    if user_id not in self.game_records:
+                        await message.channel.send(
+                            "Sorry you have never played. Clearly you think you are better than the rest of us...")
+                    else:
+                        embed = discord.Embed(title="Player Stats",
+                                              description=f"Info for {message.author.mention}",
+                                              color=discord.Color.blue())
+
+                        user_data = self.game_records[user_id]
+
+                        embed.add_field(name="Wins", value=user_data["wins"], inline=True)
+                        embed.add_field(name="Draws", value=user_data["draws"], inline=True)
+                        embed.add_field(name="Losses", value=user_data["losses"], inline=True)
+                        embed.add_field(name="Total", value=user_data["total"], inline=True)
+
+                        data = []
+                        for u, v in user_data['games'].items():
+                            user = self.get_user(int(u))
+
+                            data.append(
+                                f'{user.display_name} T:{v["total"]} W:{v["wins"]} D:{v["draws"]} L:{v["losses"]}')
+
+                        embed.add_field(name="Battles", value='\n'.join(data), inline=False)
+
+                        await message.channel.send(embed=embed)
 
                     return
 
@@ -1029,6 +1116,7 @@ class EmojiGame(discord.Client):
 
                 await channel.send(f"{user_mentioned} THE GAME HAS ENDED THE WINNER IS {m}")
 
+            self.record_game(game)
             data = frozenset(set(u.discord_user for u in game.users))
             del self.running_games[data]
 
@@ -1119,11 +1207,9 @@ if __name__ == '__main__':
 
     print("STARTING DISCORD")
 
-
     # class Temp:
     #     def __init__(self, name):
     #         self.display_name = name
-
 
     # random.seed(42)
     # game = Game([Temp("A"), Temp("B")])
