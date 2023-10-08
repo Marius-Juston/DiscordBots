@@ -32,6 +32,8 @@ USE_HISTORY = False
 MAX_EMOJIS = 4
 MAX_CHARACTER_LENGTH = 1500
 
+MAX_RUNS = 200
+
 
 # define a retry decorator
 def retry_with_exponential_backoff(
@@ -140,6 +142,8 @@ def generate_emojis(extra_emojis):
 
     emojis.extend(extra_emojis)
 
+    emojis = set(emojis)
+
     print(emojis)
 
     character_data = {'characters': {}, 'history': []}
@@ -174,9 +178,11 @@ def generate_emojis(extra_emojis):
 
                     print("Summon", e)
                     if e not in character_data_formatted:
-                        emojis.append(e)
+                        emojis.add(e)
 
     print(emojis)
+
+    emojis = list(emojis)
 
     random.shuffle(emojis)
 
@@ -261,7 +267,7 @@ def reformat_emojis():
 
         for attack in attacks[1:]:
             output = extract_attack(attack)
-
+            print(output, attack)
             if output['type'].startswith("S"):
                 special_moves.append(output)
             else:
@@ -566,6 +572,8 @@ class Game:
 
         self.text_data = []
 
+        self.count = 0
+
     def reset_blocks(self, active_user):
         for u in self.users:
             if u == active_user:
@@ -661,7 +669,7 @@ class Game:
         return False
 
     def finished(self):
-        return self.winner() != -1 or (self.count // 2) > 30
+        return self.winner() != -1 or (self.count // 2) > MAX_RUNS
 
     def reset_money(self):
         self.money_per_user = dict((u, 9) for u in self.users)
@@ -973,10 +981,30 @@ class EmojiGame(discord.Client):
 
 if __name__ == '__main__':
     # random.seed(42)
-    generate = False
+    generate = True
 
     if generate:
         extra_emojis = ['🥶', '💀', '🤑', '🤐', '🥵']
+        battle_emojis = [
+            "😀", "😁", "😂", "🤣", "😃", "😄", "😅", "😆", "😉", "😊",
+            "😋", "😎", "😍", "😘", "😗", "😙", "😚", "☺️", "🙂", "🤗",
+            "🤩", "🤔", "🤨", "😐", "😑", "😶", "🙄", "😏", "😣", "😥",
+            "😮", "🤐", "😯", "😪", "😫", "😴", "😌", "😛", "😜", "😝",
+            "🤤", "😒", "😓", "😔", "😕", "🙃", "🤑", "😲", "🙁", "😖",
+            "😞", "😟", "😤", "😢", "😭", "😦", "😧", "😨", "😩", "🤯",
+            "😬", "😰", "😱", "😳", "🤪", "😵", "😡", "😠", "🤬", "😷",
+            "🤒", "🤕", "🤢", "🤮", "🤧", "😇", "🤠", "🤡", "🤥", "🤫",
+            "🤭", "🧐", "🤓", "😈", "👿", "👹", "👺", "💀", "☠️", "👻",
+            "👽", "👾", "🤖", "💩", "🙊", "🙉", "🙈", "🐵", "🐶", "🐺",
+            "🦊", "🦝", "🐱", "🐈", "🦁", "🐯", "🐅", "🐆", "🐴", "🐎",
+            "🦄", "🐮", "🐂", "🐃", "🐄", "🐷", "🐖", "🐗", "🐽", "🐏",
+            "🐑", "🐐", "🐪", "🐫", "🦙", "🦒", "🐘", "🦏", "🦛", "🐭",
+            "🐁", "🐀", "🐹", "🐰", "🐇", "🐿️", "🦔", "🦇", "🐻", "🐨", '🖕', '🌞',
+            '🧀', '🛸','🥕','🔥','🌈','🍯'
+        ]
+
+        extra_emojis.extend(battle_emojis)
+
         new = True
 
         while new:
@@ -992,9 +1020,9 @@ if __name__ == '__main__':
 
     print("STARTING DISCORD")
 
-    intents = discord.Intents.default()
-    intents.message_content = True
-
-    client = EmojiGame(intents=intents)
-
-    client.run(BOT_TOKEN)
+    # intents = discord.Intents.default()
+    # intents.message_content = True
+    #
+    # client = EmojiGame(intents=intents)
+    #
+    # client.run(BOT_TOKEN)
