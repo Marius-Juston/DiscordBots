@@ -881,12 +881,14 @@ class EmojiGame(discord.Client):
         text_data = game.text_data
 
         if sum(lengths) > MAX_CHARACTER_LENGTH:
-            file_name = f"{game.users[0].discord_user.display_name}-{game.users[0].discord_user.display_name}.txt"
+            file_name = f"{game.users[0].discord_user.display_name}-{game.users[1].discord_user.display_name}.txt"
 
             with open(file_name, 'w', encoding='utf-8')as f:
                 f.write("\n".join(text_data))
 
             await channel.send(file=File(file_name, "run.txt"))
+
+            os.remove(file_name)
 
 
             # text_data = []
