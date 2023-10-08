@@ -585,7 +585,7 @@ class Game:
         current = self.users[self.user_flip]
         target = self.users[1 - self.user_flip]
 
-        self.text_data.append(f"{current.discord_user.display_name}'s turn")
+        self.text_data.append(f"{current.discord_user.display_name}'s turn ({self.count})")
 
         self.reset_blocks(current)
 
@@ -1026,3 +1026,7 @@ if __name__ == '__main__':
     client = EmojiGame(intents=intents)
 
     client.run(BOT_TOKEN)
+
+
+# SAVE SCOREBOARD OF USERS WINNING
+# ADD ITEMS TO PERMANTLY BUFF
