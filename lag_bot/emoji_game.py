@@ -544,6 +544,8 @@ class Game:
 
         self.text_data = []
 
+        self.ai_expected = []
+
     def reset_shop(self):
         self.reset_money()
         self.reset_done_buying()
@@ -677,6 +679,79 @@ class Game:
     def reset_done_buying(self, val=False):
         self.done_shop_per_user = dict((u, val) for u in self.users)
 
+    def calculate_expected(self, e):
+        e = Game.EMOJIS[e]
+
+        ranges_p = []
+        ranges = []
+
+        melee_p = []
+        melee = []
+
+        for i in e['attacks']:
+            if i['type'] == "R":
+                ranges.append(i['amount'])
+                ranges_p.append(i['p'])
+            elif i['type'] == "M":
+                melee.append(i['amount'])
+                melee_p.append(i['p'])
+
+        r_s = sum(ranges_p)
+        ranges_p = sum([p / r_s * a for p, a in zip(ranges_p, ranges)])
+        m_s = sum(melee_p)
+        melee_p = sum([p / m_s * a for p, a in zip(melee_p, melee)])
+
+        total = ranges_p + melee_p + e['HP']
+
+        for i in e['specials']:
+            if i['type'] == "SS":
+                total += self.calculate_expected(i['summon'])
+
+        return total
+
+    async def ai_purchase(self, channel, other_user):
+        exp = other_user.base_deck
+
+        expected = [(i, self.calculate_expected(e)) for i, e in enumerate(exp)]
+
+        shop = self.user_shop[other_user]
+
+        expected_shop = [(i, self.calculate_expected(e)) for i, e in enumerate(shop)]
+        expected_shop = sorted(expected_shop, key=lambda x: x[1], reverse=True)
+
+        if len(exp) > 0:
+            min_expected = min(expected, key=lambda x: x[1])
+        else:
+            min_expected = []
+
+        if len(expected) == 0:
+            index = random.randint(0, MAX_EMOJIS)
+            emoji = shop[expected_shop[0][0]]
+
+            continue_buying = self.buy_emoji(other_user, emoji, index)
+
+            if continue_buying:
+                await channel.send(
+                    f"{other_user.discord_user.mention} Bought {emoji} putting it in index {index}")
+        elif len(shop) == 0 or (len(exp) == MAX_EMOJIS and min_expected[1] > expected_shop[0][1]):
+            continue_buying = self.reroll(other_user) is not None
+
+            if continue_buying:
+                await channel.send(
+                    f"{other_user.discord_user.mention} Re-rolled new shop {' '.join(self.user_shop[other_user])}")
+        else:
+            index = min_expected[0]
+            emoji = shop[expected_shop[0][0]]
+            continue_buying = self.buy_emoji(other_user, shop[expected_shop[0][0]], min_expected[0])
+
+            if continue_buying:
+                await channel.send(
+                    f"{other_user.discord_user.mention} Bought {emoji} putting it in index {index}")
+
+
+        if continue_buying:
+            await self.ai_purchase(channel, other_user)
+
 
 class EmojiGame(discord.Client):
     async def on_ready(self):
@@ -731,6 +806,8 @@ class EmojiGame(discord.Client):
             del self.game_messages[message]
 
             if other_user.discord_user == self.user:
+                await game.ai_purchase(message.channel, other_user)
+
                 game.finished_shopping(other_user)
                 await message.channel.send(f"{other_user.discord_user.mention} Finished shopping!")
 
@@ -883,13 +960,12 @@ class EmojiGame(discord.Client):
         if sum(lengths) > MAX_CHARACTER_LENGTH:
             file_name = f"{game.users[0].discord_user.display_name}-{game.users[1].discord_user.display_name}.txt"
 
-            with open(file_name, 'w', encoding='utf-8')as f:
+            with open(file_name, 'w', encoding='utf-8') as f:
                 f.write("\n".join(text_data))
 
             await channel.send(file=File(file_name, "run.txt"))
 
             os.remove(file_name)
-
 
             # text_data = []
             #
@@ -1010,7 +1086,7 @@ if __name__ == '__main__':
             "🦄", "🐮", "🐂", "🐃", "🐄", "🐷", "🐖", "🐗", "🐽", "🐏",
             "🐑", "🐐", "🐪", "🐫", "🦙", "🦒", "🐘", "🦏", "🦛", "🐭",
             "🐁", "🐀", "🐹", "🐰", "🐇", "🐿️", "🦔", "🦇", "🐻", "🐨", '🖕', '🌞',
-            '🧀', '🛸','🥕','🔥','🌈','🍯'
+            '🧀', '🛸', '🥕', '🔥', '🌈', '🍯'
         ]
 
         extra_emojis.extend(battle_emojis)
@@ -1036,7 +1112,6 @@ if __name__ == '__main__':
     client = EmojiGame(intents=intents)
 
     client.run(BOT_TOKEN)
-
 
 # SAVE SCOREBOARD OF USERS WINNING
 # ADD ITEMS TO PERMANTLY BUFF
