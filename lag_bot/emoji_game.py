@@ -7,7 +7,7 @@ from typing import List
 
 import discord
 import openai
-from discord import Message, Member, Reaction, TextChannel
+from discord import Message, Member, Reaction, TextChannel, File
 from dotenv import load_dotenv
 import re
 
@@ -881,31 +881,39 @@ class EmojiGame(discord.Client):
         text_data = game.text_data
 
         if sum(lengths) > MAX_CHARACTER_LENGTH:
-            text_data = []
+            file_name = f"{game.users[0].discord_user.display_name}-{game.users[0].discord_user.display_name}.txt"
 
-            total_count = 0
+            with open(file_name, 'w', encoding='utf-8')as f:
+                f.write("\n".join(text_data))
 
-            data = game.text_data[::-1]
+            await channel.send(file=File(file_name, "run.txt"))
 
-            i = 0
-            while i < len(data):
-                d = data[i]
-                l = len(d)
 
-                if total_count + l < MAX_CHARACTER_LENGTH:
-                    text_data.append(d)
-                    total_count += l
-                else:
-                    break
+            # text_data = []
+            #
+            # total_count = 0
+            #
+            # data = game.text_data[::-1]
+            #
+            # i = 0
+            # while i < len(data):
+            #     d = data[i]
+            #     l = len(d)
+            #
+            #     if total_count + l < MAX_CHARACTER_LENGTH:
+            #         text_data.append(d)
+            #         total_count += l
+            #     else:
+            #         break
+            #
+            #     i += 1
+            #
+            # text_data = text_data[::-1]
+        else:
+            if len(text_data) > 0:
+                info = "```" + "\n".join(text_data) + "```"
 
-                i += 1
-
-            text_data = text_data[::-1]
-
-        if len(text_data) > 0:
-            info = "```" + "\n".join(text_data) + "```"
-
-            await channel.send(info)
+                await channel.send(info)
 
         if game.winner() == -1:
             for u in game.users:
