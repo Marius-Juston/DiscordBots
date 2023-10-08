@@ -611,7 +611,7 @@ class Game:
                 # print("DEATHS", death)
                 current.special(move)
             if len(summons) > 0:
-                self.text_data.append(f"{current.discord_user.display_name} summons:")
+                self.text_data.append(f"{target.discord_user.display_name} summons:")
                 self.text_data.extend([f'{e} was summoned' for e in summons])
                 # print("SUMMONS", summons)
 
