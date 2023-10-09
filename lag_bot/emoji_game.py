@@ -661,9 +661,9 @@ class Game:
 
         return emojis_to_buy
 
-    def purchase(self, user):
-        if self.money_per_user[user] >= 3:
-            self.money_per_user[user] -= 3
+    def purchase(self, user, amount=3):
+        if self.money_per_user[user] >= amount:
+            self.money_per_user[user] -= amount
 
             return True
         return False
@@ -706,6 +706,8 @@ class Game:
 
         total_m = 0
 
+        total = 0
+
         for i in e['attacks']:
             if i['type'] == "R":
                 ranges.append(i['amount'] * (4 if i['mode'] == "A" else 1))
@@ -715,8 +717,12 @@ class Game:
 
                 total_m += i['p']
                 melee_p.append(i['p'])
+            total += i['p']
 
-        r_s = sum(ranges_p)
+        if use_range:
+            r_s = total
+        else:
+            r_s = sum(ranges_p)
         ranges_p = sum([p / r_s * a for p, a in zip(ranges_p, ranges)])
         m_s = total_m
         melee_p = sum([p / m_s * a for p, a in zip(melee_p, melee)])
