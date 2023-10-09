@@ -1041,6 +1041,8 @@ class EmojiGame(discord.Client):
                     await message.channel.send(embed=embed)
 
                     return
+                elif len(e) > 0:
+                    return
 
             else:
                 playing_users.add(message.mentions[1])
