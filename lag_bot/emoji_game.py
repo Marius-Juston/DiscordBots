@@ -989,7 +989,7 @@ class EmojiGame(discord.Client):
 
                         data = []
                         for u, v in user_data['games'].items():
-                            user = self.get_user(int(u))
+                            user = await self.fetch_user(int(u))
 
                             data.append(
                                 f'{user.display_name} T:{v["total"]} W:{v["wins"]} D:{v["draws"]} L:{v["losses"]}')
@@ -997,6 +997,35 @@ class EmojiGame(discord.Client):
                         embed.add_field(name="Battles", value='\n'.join(data), inline=False)
 
                         await message.channel.send(embed=embed)
+
+                    return
+                elif e == "leaderboard":
+                    embed = discord.Embed(title="Leaderboard",
+                                          description=f"Current users with most wins",
+                                          color=discord.Color.blue())
+
+                    a = []
+
+                    for k, v in self.game_records.items():
+                        user = await self.fetch_user(int(k))
+                        a.append((user.display_name, v['wins']))
+
+                    a = sorted(a, key=lambda x: x[1])
+
+                    if len(a) >= 1:
+                        embed.add_field(name="👑", value=a[0][0], inline=False)
+
+                        if len(a) >= 2:
+
+                            embed.add_field(name="🥈", value=a[1][0], inline=False)
+
+                            if len(a) >= 3:
+                                embed.add_field(name="🥉", value=a[2][0], inline=False)
+
+                                if len(a) >= 3:
+                                    embed.add_field(name="💩", value=a[-1][0], inline=False)
+
+                    await message.channel.send(embed=embed)
 
                     return
 
