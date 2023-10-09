@@ -704,17 +704,21 @@ class Game:
         melee_p = []
         melee = []
 
+        total_m = 0
+
         for i in e['attacks']:
             if i['type'] == "R":
                 ranges.append(i['amount'] * (4 if i['mode'] == "A" else 1))
                 ranges_p.append(i['p'])
             elif i['type'] == "M":
                 melee.append(i['amount'])
+
+                total_m += i['p']
                 melee_p.append(i['p'])
 
         r_s = sum(ranges_p)
         ranges_p = sum([p / r_s * a for p, a in zip(ranges_p, ranges)])
-        m_s = sum(melee_p)
+        m_s = total_m
         melee_p = sum([p / m_s * a for p, a in zip(melee_p, melee)])
 
         if len(melee) > 0 and not use_range:
@@ -972,7 +976,7 @@ class EmojiGame(discord.Client):
                     await message.channel.send(embed=embed)
 
                     return
-                elif e == "stat":
+                elif e.lower() == "stat":
                     user_id = str(message.author.id)
 
                     if user_id not in self.game_records:
@@ -1002,7 +1006,7 @@ class EmojiGame(discord.Client):
                         await message.channel.send(embed=embed)
 
                     return
-                elif e == "leaderboard":
+                elif e.lower() == "leaderboard":
                     embed = discord.Embed(title="Leaderboard",
                                           description=f"Current users with most wins",
                                           color=discord.Color.blue())
