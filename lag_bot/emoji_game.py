@@ -1013,7 +1013,7 @@ class EmojiGame(discord.Client):
                         user = await self.fetch_user(int(k))
                         a.append((user.display_name, v['wins']))
 
-                    a = sorted(a, key=lambda x: x[1])
+                    a = sorted(a, key=lambda x: x[1], reverse=True)
 
                     if len(a) >= 1:
                         embed.add_field(name="👑", value=f"{a[0][0]} {str(a[0][1])}", inline=False)
