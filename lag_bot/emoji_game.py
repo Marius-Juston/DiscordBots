@@ -695,7 +695,7 @@ class Game:
     def reset_done_buying(self, val=False):
         self.done_shop_per_user = dict((u, val) for u in self.users)
 
-    def calculate_expected(self, e):
+    def calculate_expected(self, e, use_range=True):
         e = Game.EMOJIS[e]
 
         ranges_p = []
@@ -706,7 +706,7 @@ class Game:
 
         for i in e['attacks']:
             if i['type'] == "R":
-                ranges.append(i['amount'])
+                ranges.append(i['amount'] * (4 if i['mode'] == "A" else 1))
                 ranges_p.append(i['p'])
             elif i['type'] == "M":
                 melee.append(i['amount'])
@@ -717,11 +717,14 @@ class Game:
         m_s = sum(melee_p)
         melee_p = sum([p / m_s * a for p, a in zip(melee_p, melee)])
 
+        if len(melee) > 0 and not use_range:
+            ranges_p = 0
+
         total = ranges_p + melee_p + e['HP']
 
         for i in e['specials']:
             if i['type'] == "SS":
-                total += self.calculate_expected(i['summon'])
+                total += self.calculate_expected(i['summon'], False)
 
         return total
 
@@ -1013,17 +1016,17 @@ class EmojiGame(discord.Client):
                     a = sorted(a, key=lambda x: x[1])
 
                     if len(a) >= 1:
-                        embed.add_field(name="👑", value=a[0][0], inline=False)
+                        embed.add_field(name="👑", value=f"{a[0][0]} {str(a[0][1])}", inline=False)
 
                         if len(a) >= 2:
 
-                            embed.add_field(name="🥈", value=a[1][0], inline=False)
+                            embed.add_field(name="🥈", value=f"{a[1][0]} {str(a[1][1])}", inline=False)
 
                             if len(a) >= 3:
-                                embed.add_field(name="🥉", value=a[2][0], inline=False)
+                                embed.add_field(name="🥉", value=f"{a[2][0]} {str(a[2][1])}", inline=False)
 
-                                if len(a) >= 3:
-                                    embed.add_field(name="💩", value=a[-1][0], inline=False)
+                                if len(a) >= 4:
+                                    embed.add_field(name="💩", value=f"{a[-1][0]} {str(a[-1][1])}", inline=False)
 
                     await message.channel.send(embed=embed)
 
