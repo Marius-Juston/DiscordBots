@@ -36,6 +36,7 @@ MAX_RUNS = 200
 
 GAME_RECORDS = "games.json"
 
+BOT_ID = 1160319126930210990
 
 # define a retry decorator
 def retry_with_exponential_backoff(
@@ -951,6 +952,37 @@ class EmojiGame(discord.Client):
 
         self.game_messages[message] = user
 
+    async def show_stat(self, channel, user_id):
+        if isinstance(user_id, int):
+            user_id = str(user_id)
+
+        if user_id not in self.game_records:
+            await channel.send(
+                "Sorry you have never played. Clearly you think you are better than the rest of us...")
+        else:
+            user = await self.fetch_user(int(user_id))
+            embed = discord.Embed(title="Player Stats",
+                                  description=f"Info for {user.mention}",
+                                  color=discord.Color.blue())
+
+            user_data = self.game_records[user_id]
+
+            embed.add_field(name="Wins", value=user_data["wins"], inline=True)
+            embed.add_field(name="Draws", value=user_data["draws"], inline=True)
+            embed.add_field(name="Losses", value=user_data["losses"], inline=True)
+            embed.add_field(name="Total", value=user_data["total"], inline=True)
+
+            data = []
+            for u, v in user_data['games'].items():
+                user = await self.fetch_user(int(u))
+
+                data.append(
+                    f'{user.display_name} T:{v["total"]} W:{v["wins"]} D:{v["draws"]} L:{v["losses"]}')
+
+            embed.add_field(name="Battles", value='\n'.join(data), inline=False)
+
+            await channel.send(embed=embed)
+
     async def on_message(self, message: Message):
         if message.author.bot:
             return
@@ -965,52 +997,33 @@ class EmojiGame(discord.Client):
                 await message.channel.send("Please either mention 1 or 2 users to play with.")
                 return
 
+            clean_content = re.sub("<[@#!&](.*?)>", "", message.content).strip()
+
             if len(message.mentions) == 1:
                 playing_users.add(self.user)
 
-                e = re.sub("<[@#!&](.*?)>", "", message.content).strip()
-
-                if e in Game.EMOJIS:
+                if clean_content in Game.EMOJIS:
                     embed = discord.Embed(title="Emoji Info",
-                                          description=f"Info for {e}",
+                                          description=f"Info for {clean_content}",
                                           color=discord.Color.light_grey())
 
-                    self.generate_character_sheet(embed, e)
+                    self.generate_character_sheet(embed, clean_content)
 
                     await message.channel.send(embed=embed)
 
                     return
-                elif e.lower() == "stat":
-                    user_id = str(message.author.id)
+                elif clean_content.lower() == "stat":
+                    bot_mention = f"<@{BOT_ID}>"
 
-                    if user_id not in self.game_records:
-                        await message.channel.send(
-                            "Sorry you have never played. Clearly you think you are better than the rest of us...")
+                    if message.content[len(bot_mention):].find(bot_mention) >= 0:
+                        user_id = str(BOT_ID)
                     else:
-                        embed = discord.Embed(title="Player Stats",
-                                              description=f"Info for {message.author.mention}",
-                                              color=discord.Color.blue())
+                        user_id = str(message.author.id)
 
-                        user_data = self.game_records[user_id]
-
-                        embed.add_field(name="Wins", value=user_data["wins"], inline=True)
-                        embed.add_field(name="Draws", value=user_data["draws"], inline=True)
-                        embed.add_field(name="Losses", value=user_data["losses"], inline=True)
-                        embed.add_field(name="Total", value=user_data["total"], inline=True)
-
-                        data = []
-                        for u, v in user_data['games'].items():
-                            user = await self.fetch_user(int(u))
-
-                            data.append(
-                                f'{user.display_name} T:{v["total"]} W:{v["wins"]} D:{v["draws"]} L:{v["losses"]}')
-
-                        embed.add_field(name="Battles", value='\n'.join(data), inline=False)
-
-                        await message.channel.send(embed=embed)
+                    await self.show_stat(message.channel, user_id)
 
                     return
-                elif e.lower() == "leaderboard":
+                elif clean_content.lower() == "leaderboard":
                     embed = discord.Embed(title="Leaderboard",
                                           description=f"Current users with most wins",
                                           color=discord.Color.blue())
@@ -1039,11 +1052,17 @@ class EmojiGame(discord.Client):
                     await message.channel.send(embed=embed)
 
                     return
-                elif len(e) > 0:
+                elif len(clean_content) > 0:
                     return
 
             else:
-                playing_users.add(message.mentions[1])
+                next_player = message.mentions[1]
+
+                playing_users.add(next_player)
+
+                if clean_content == 'stat':
+                    await self.show_stat(message.channel, next_player.id)
+                    return
         else:
             return
 
