@@ -646,7 +646,9 @@ class Game:
 
         return move
 
-    def winner(self):
+    def round_winner(self):
+        if all([len(u.hps) == 0 for u in self.users]):
+            return -1
         if len(self.user1.hps) == 0:
             return 1
         elif len(self.user2.hps) == 0:
@@ -687,7 +689,7 @@ class Game:
         return False
 
     def finished(self):
-        return self.winner() != -1 or (self.count // 2) > MAX_RUNS
+        return self.round_winner() != -1 or (self.count // 2) > MAX_RUNS
 
     def reset_money(self):
         self.money_per_user = dict((u, 9) for u in self.users)
@@ -876,11 +878,10 @@ class EmojiGame(discord.Client):
             else:
                 await reaction.message.channel.send(f"{game_user.discord_user.mention} Unable to buy {emoji}")
 
-    def record_game(self, game):
-        end = game.winner()
-
-        for u in game.users:
+    def record_game(self, game, end):
+        for i, u in enumerate(game.users):
             u1 = str(u.discord_user.id)
+
             if u1 not in self.game_records:
                 self.game_records[u1] = {
                     'wins': 0,
@@ -889,9 +890,6 @@ class EmojiGame(discord.Client):
                     'losses': 0,
                     'games': {}
                 }
-
-        for i, u in enumerate(game.users):
-            u1 = str(u.discord_user.id)
 
             if end == -1:
                 self.game_records[u1]['draws'] += 1
@@ -1137,30 +1135,34 @@ class EmojiGame(discord.Client):
 
                 await channel.send(info)
 
-        if game.winner() == -1:
+        if game.round_winner() == -1:
             for u in game.users:
                 u.hp -= 1
 
-            await channel.send(f'The game ended in a draw.')
+            await channel.send(f'The round ended in a draw.')
         else:
-            game.users[1 - game.winner()].hp -= 3
+            game.users[1 - game.round_winner()].hp -= 3
 
-            await channel.send(f'The winner is {game.users[game.winner()].discord_user.mention}.')
+            await channel.send(f"This round's winner is {game.users[game.round_winner()].discord_user.mention}.")
 
         await self.show_users(channel, game)
 
         hps = [u.hp <= 0 for u in game.users]
 
         if any(hps):
+            result = -1
+
             if all(hps):
-                await channel.send(f"{user_mentioned} THE GAME HAS ENDED THERE IS NO WINNER")
+                await channel.send(f"{user_mentioned} THE GAME HAS ENDED IN A DRAW THERE IS NO WINNER")
             else:
                 index = hps.index(False)
                 m = game.users[index].discord_user.mention
 
+                result = index
+
                 await channel.send(f"{user_mentioned} THE GAME HAS ENDED THE WINNER IS {m}")
 
-            self.record_game(game)
+            self.record_game(game, result)
             data = frozenset(set(u.discord_user for u in game.users))
             del self.running_games[data]
 
